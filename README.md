@@ -2,12 +2,18 @@ This repository is developed by [@penguin1214](https://github.com/penguin1214) a
 
 Code structure is inspired by [pytorch-cyclegan](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) and [BasicSR](https://github.com/xinntao/BasicSR).
 
+## TODO
+- 先跑通SRCNN
+- 跑通VDSR
+- Kmeans
+
 ## Requirements
 - Python3
 - Pytorch
 - TensorFlow(for logging, not required.)
 
-## Descriptions:
+## Descriptions: 
+
 - 运行train.py所需要的**训练数据集**可在此处 [[link](https://pan.baidu.com/s/1n_iPkVP9GYUcp7Flp_sWrA)] 下载（建议debug时使用），该数据集146M，包含344张LR和HR的样本对。PS: 验证集需自己准备
 
 ## Code architecture:
