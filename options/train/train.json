@@ -10,7 +10,7 @@
       ,"mode": "LRHR_H5"
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/ser606/ZhenLi/data/H5file/i91c2_x3/train"
+      ,"dataroot_H5": "/home/qilei/H5file/i91c2_x3/train"
       ,"n_workers": 8
       ,"batch_size": 16
       ,"HR_size": 128
@@ -23,12 +23,12 @@
       ,"mode": "LRHR_H5"
       ,"dataroot_HR": "pathto/data/Set5_mod"
       ,"dataroot_LR": "pathto/data/Set5_bicLRx4"
-      ,"dataroot_H5": "/home/ser606/ZhenLi/data/H5file/i91c2_x3/test"
+      ,"dataroot_H5": "/home/qilei/H5file/i91c2_x3/test"
     }
   }
   ,"networks": {
     "G": {
-    "which_model": "dbpn"
+    "which_model": "srcnn"
     ,"norm_type": "bn"
     ,"mode": "NAC"
     ,"num_features": 64

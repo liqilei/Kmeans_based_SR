@@ -3,6 +3,7 @@ import torch.nn as nn
 from torch.nn import init
 import functools
 import models.modules.archs as Arch
+import models.modules.srcnn as srcnn
 
 ####################
 # initialize
@@ -113,10 +114,8 @@ def define_G(opt):
     elif which_model == 'conv_test':
         netG = Arch.ConvTest(in_channels=opt['in_channels'], out_channels=opt['out_channels'], num_features=opt['num_features'], \
             num_blocks=opt['num_blocks'], upscale_factor=opt['scale'], norm_type=opt['norm_type'], mode=opt['mode'])
-    elif which_model == 'srcnn_k':
-        # TODO
-        netG = Arch.ConvTest(in_channels=opt['in_channels'], out_channels=opt['out_channels'], num_features=opt['num_features'], \
-            num_blocks=opt['num_blocks'], upscale_factor=opt['scale'], norm_type=opt['norm_type'], mode=opt['mode'])
+    elif which_model == 'srcnn':
+        netG = srcnn.srcnn(in_channels=opt['in_channels'], out_channels=opt['out_channels'])
 
     elif which_model == 'sr_explore':
         import models.modules.sr_explore_arch as sr_explore_arch
