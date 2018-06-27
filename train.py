@@ -12,29 +12,30 @@ from models.SRModel import SRModel
 from data import create_dataloader
 from data import create_dataset
 
-parser = argparse.ArgumentParser(description='Train Super Resolution Models')
-parser.add_argument('-opt', type=str, required=True, help='Path to options JSON file.')
-opt = option.parse(parser.parse_args().opt, is_train=True)
-
-if opt['train']['resume'] is False:
-    util.mkdir_and_rename(opt['path']['exp_root'])  # rename old experiments if exists
-    util.mkdirs((path for key, path in opt['path'].items() if not key == 'exp_root' and \
-        not key == 'pretrain_G' and not key == 'pretrain_D'))
-    option.save(opt)
-    opt = option.dict_to_nonedict(opt)  # Convert to NoneDict, which return None for missing key.
-else:
-    opt = option.dict_to_nonedict(opt)
-    if opt['train']['resume_path'] is None:
-        raise ValueError("The 'resume_path' does not declarate")
-
-if opt['exec_debug']:
-    NUM_EPOCH = 50
-    opt['datasets']['train']['dataroot_HR'] = '/home/ser606/ZhenLi/data/DIV2K/DIV2K_train_HR_debug'
-    opt['datasets']['train']['dataroot_LR'] = '/home/ser606/ZhenLi/data/DIV2K/DIV2K_train_LR_debug'
-else:
-    NUM_EPOCH = int(opt['num_epochs'])
 
 def main():
+    parser = argparse.ArgumentParser(description='Train Super Resolution Models')
+    parser.add_argument('-opt', type=str, required=True, help='Path to options JSON file.')
+    opt = option.parse(parser.parse_args().opt, is_train=True)
+
+    if opt['train']['resume'] is False:
+        util.mkdir_and_rename(opt['path']['exp_root'])  # rename old experiments if exists
+        util.mkdirs((path for key, path in opt['path'].items() if not key == 'exp_root' and \
+                     not key == 'pretrain_G' and not key == 'pretrain_D'))
+        option.save(opt)
+        opt = option.dict_to_nonedict(opt)  # Convert to NoneDict, which return None for missing key.
+    else:
+        opt = option.dict_to_nonedict(opt)
+        if opt['train']['resume_path'] is None:
+            raise ValueError("The 'resume_path' does not declarate")
+
+    if opt['exec_debug']:
+        NUM_EPOCH = 50
+        opt['datasets']['train']['dataroot_HR'] = '/home/ser606/ZhenLi/data/DIV2K/DIV2K_train_HR_debug'
+        opt['datasets']['train']['dataroot_LR'] = '/home/ser606/ZhenLi/data/DIV2K/DIV2K_train_LR_debug'
+    else:
+        NUM_EPOCH = int(opt['num_epochs'])
+
     # random seed
     seed = opt['train']['manual_seed']
     if seed is None:

@@ -6,10 +6,11 @@
   ,"scale": 4
   ,"datasets": {
     "train": {
-      "name": "DIV2K"
-      ,"mode": "LRHR"
+      "name": "91Images"
+      ,"mode": "LRHR_H5"
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
+      ,"dataroot_H5": "/home/ser606/ZhenLi/data/H5file/i91c2_x3/train"
       ,"n_workers": 8
       ,"batch_size": 16
       ,"HR_size": 128
@@ -19,14 +20,15 @@
     }
     ,"val": {
       "name": "val_set5"
-      ,"mode": "LRHR"
+      ,"mode": "LRHR_H5"
       ,"dataroot_HR": "pathto/data/Set5_mod"
       ,"dataroot_LR": "pathto/data/Set5_bicLRx4"
+      ,"dataroot_H5": "/home/ser606/ZhenLi/data/H5file/i91c2_x3/test"
     }
   }
   ,"networks": {
     "G": {
-    "which_model": "d-dbpn"
+    "which_model": "dbpn"
     ,"norm_type": "bn"
     ,"mode": "NAC"
     ,"num_features": 64
