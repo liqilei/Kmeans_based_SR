@@ -28,7 +28,7 @@
   }
   ,"networks": {
     "G": {
-    "which_model": "srcnn"
+    "which_model": "srcnn_k"
     ,"norm_type": "None"
     ,"mode": "NAC"
     ,"num_features": 64

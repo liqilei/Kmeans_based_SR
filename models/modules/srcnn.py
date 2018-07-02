@@ -3,6 +3,23 @@ import torch
 
 import models.modules.blocks as B
 
+
+class srcnn(nn.Module):
+    def __init__(self, in_channels, out_channels, num_branch):
+        super(srcnn, self).__init__()
+        self.num_branch = num_branch
+
+        self.patch_extraction = B.ConvBlock(in_channels, 64, kernel_size=9, norm_type=None, act_type='relu',valid_padding=False, padding=0)
+        self.mapping = B.ConvBlock(64, 32, kernel_size=1, norm_type=None, act_type='relu',valid_padding=False, padding=0)
+        self.reconstruct = B.ConvBlock(32, out_channels, kernel_size=5, norm_type=None, act_type=None,valid_padding=False, padding=0)
+
+    def forward(self, x):
+        x = self.patch_extraction(x)
+        x = self.mapping(x)
+        hr = self.reconstruct(x)
+
+        return hr
+
 class srcnn_k(nn.Module):
     def __init__(self, in_channels, out_channels, num_branch):
         super(srcnn_k, self).__init__()
