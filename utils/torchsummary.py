@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
+import numpy as np
 
 from collections import OrderedDict
 
@@ -61,7 +62,12 @@ def summary(model, input_size):
     model.apply(register_hook)
     # make a forward pass
     # print(x.shape)
-    model(x)
+    if type(model.module).__name__ == 'srcnn_k':
+        a = 1/float(model.module.num_branch)
+        coeff = [torch.unsqueeze(torch.tensor(a), 0) for i in range(model.module.num_branch)]
+        model(x, coeff)
+    else:
+        model(x)
     # remove these hooks
     for h in hooks:
         h.remove()

@@ -60,6 +60,9 @@ def main():
     if train_loader is None:
         raise ValueError("The training data does not exist")
 
+    if 'coeff' in train_set[0]:
+        opt['networks']['G']['num_coeff'] = len(train_set[0]['coeff'])
+        opt['train']['num_coeff'] = len(train_set[0]['coeff'])
     # TODO: design an exp that can obtain the location of the biggest error
     solver = SRModel(opt)
     solver.summary(train_set[0]['LR'].size())

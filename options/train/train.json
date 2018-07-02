@@ -1,5 +1,5 @@
 {
-  "name":"SRGAN"
+  "name":"SRCNN_K"
   ,"exec_debug": true
   ,"net_debug": false
   ,"mode":"sr"
@@ -10,8 +10,8 @@
       ,"mode": "LRHR_H5"
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/qilei/H5file/i91c2_x3/train"
-      ,"n_workers": 8
+      ,"dataroot_H5": "/home/server606/SRdata/H5file/i91c2_x3/train"
+      ,"n_workers": 1
       ,"batch_size": 16
       ,"HR_size": 128
       ,"use_flip": true
@@ -23,18 +23,18 @@
       ,"mode": "LRHR_H5"
       ,"dataroot_HR": "pathto/data/Set5_mod"
       ,"dataroot_LR": "pathto/data/Set5_bicLRx4"
-      ,"dataroot_H5": "/home/qilei/H5file/i91c2_x3/test"
+      ,"dataroot_H5": "/home/server606/SRdata/H5file/i91c2_x3/test"
     }
   }
   ,"networks": {
     "G": {
     "which_model": "srcnn"
-    ,"norm_type": "bn"
+    ,"norm_type": "None"
     ,"mode": "NAC"
     ,"num_features": 64
     ,"num_blocks": 4
-    ,"in_channels": 3
-    ,"out_channels": 3
+    ,"in_channels": 1
+    ,"out_channels": 1
     ,"group": 1
     }
     ,"D": {
@@ -60,7 +60,7 @@
     ,"pixel_criterion": "l1"
     ,"pixel_weight": 1.0
     ,"feature_criterion": "l1"
-    ,"feature_weight": 1
+    ,"feature_weight": 1.0
     ,"gan_type": "vanilla" 
     ,"gan_weight": 5e-3
 
@@ -72,7 +72,7 @@
     ,"num_epochs": 100
     ,"log_step": 1
     ,"val_step": 1
-    ,"resume": true
+    ,"resume": false
     ,"resume_path": "pathto/super_resolution/experiments/D-DBPN_in3f64b4_x4/epoch"
   }
 }

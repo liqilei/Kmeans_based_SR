@@ -74,6 +74,9 @@ class SRModel(BaseSolver):
         self.var_LR = Variable(self.LR)
         self.HR.resize_(target.size()).copy_(target)
         self.var_HR = Variable(self.HR)
+        if 'num_coeff' in self.train_opt.keys():
+            self.coeff = batch['coeff']
+        pass
 
     def summary(self, input_size):
         print('========================= Model Summary ========================')
@@ -85,7 +88,10 @@ class SRModel(BaseSolver):
 
     def train_step(self):
         self.optimizer.zero_grad()
-        self.SR = self.model(self.var_LR)
+        if 'num_coeff' in self.train_opt.keys():
+            self.SR = self.model(self.var_LR, self.coeff)
+        else:
+            self.SR = self.model(self.var_LR)
         loss_pix = self.criterion_pix_weight*self.criterion_pix(self.SR, self.var_HR)
         loss_pix.backward()
         self.optimizer.step()
@@ -136,6 +142,8 @@ class SRModel(BaseSolver):
     def update_learning_rate(self):
         self.scheduler.step()
 
+    # TODO
+    """
     def tf_log(self, epoch):
         print('[Logging...]')
         info = {
@@ -151,6 +159,6 @@ class SRModel(BaseSolver):
             self.tf_logger.histo_summary(key, value.data.cpu().numpy(), epoch)
             self.tf_logger.histo_summary(key + '/grad', value.grad.data.cpu().numpy(), epoch)
         print('=> Done.')
-
+    """
     # def save_network(self):
     # def load_network(self):

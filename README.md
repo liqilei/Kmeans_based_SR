@@ -2,10 +2,14 @@ This repository is developed by [@penguin1214](https://github.com/penguin1214) a
 
 Code structure is inspired by [pytorch-cyclegan](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) and [BasicSR](https://github.com/xinntao/BasicSR).
 
+## Notice
+- `num_workers` in **options/train/train.json** should fix at 1. This is a bug for h5py. I suggest us fix this bug.
 ## TODO
 - 先跑通SRCNN
 - 跑通VDSR
 - Kmeans
+- data processing code in **scripts**
+- test code in **train.py**
 
 ## Requirements
 - Python3

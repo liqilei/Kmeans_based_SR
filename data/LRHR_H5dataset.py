@@ -38,19 +38,19 @@ class LRHRH5Dataset(data.Dataset):
     def __getitem__(self, index):
         patch_LR = self.h5data_LR[index]
         patch_HR = self.h5data_HR[index]
-        coeff = [cof[:, index] for cof in self.h5data_coeff]
+        coeff = [cof[:, index][0] for cof in self.h5data_coeff]
 
         tensor_LR = torch.from_numpy(patch_LR).float()
         tensor_HR = torch.from_numpy(patch_HR).float()
 
         return {'LR': tensor_LR, 'HR': tensor_HR, 'coeff': coeff}
 
-
     def __len__(self):
         return self.h5data_HR.shape[0]
 
+    """
     def __del__(self):
         self.file_data.close()
         self.file_coeff.close()
-
+    """
 

@@ -1,7 +1,8 @@
 import os
 import torch
 import torch.nn as nn
-from utils.tf_logger import Logger as TFLogger
+# TODO
+# from utils.tf_logger import Logger as TFLogger
 
 
 class BaseSolver(object):
@@ -16,7 +17,8 @@ class BaseSolver(object):
         self.log_dir = opt['path']['log']
         self.results_dir = opt['path']['results']
         self.vis_dir = opt['path']['vis']
-        self.tf_logger = TFLogger(self.log_dir)
+        # TODO
+        # self.tf_logger = TFLogger(self.log_dir)
         self.log_step = opt['train']['log_step']
         self.val_step = opt['train']['val_step']
         self.training_loss = 0.0
