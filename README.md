@@ -4,11 +4,12 @@ Code structure is inspired by [pytorch-cyclegan](https://github.com/junyanz/pyto
 
 ## Notice
 - `num_workers` in **options/train/train.json** should fix at 1. This is a bug for h5py. I suggest us fix this bug.
+
 ## TODO
 - 先跑通SRCNN
 - 跑通VDSR
 - Kmeans
-- data processing code in **scripts**
+- data processing code in **scripts**. You can find referenced code in [EDSR](https://github.com/thstkdgus35/EDSR-PyTorch/blob/master/code/data/demo.py)
 - test code in **train.py**
 
 ## Requirements
