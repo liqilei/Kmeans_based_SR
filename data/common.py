@@ -163,6 +163,20 @@ def augment(img_list, hflip=True, rot=True):
 
     return [_augment(img) for img in img_list]
 
+def h5_augment(img_list, hflip=True, rot=True):
+    # horizontal flip OR rotate
+    hflip = hflip and random.random() < 0.5
+    vflip = rot and random.random() < 0.5
+    rot90 = rot and random.random() < 0.5
+
+    def _augment(img):
+        if hflip: img = img[:, ::-1, :]
+        if vflip: img = img[:, :, ::-1]
+        if rot90: img = img.transpose(0, 2, 1)
+        return img
+
+    return [_augment(img) for img in img_list]
+
 def channel_convert(in_c, img_list, tar_type = None):
     # conversion among BGR, gray and y
     if in_c == 3 and tar_type == 'gray':  # BGR to gray

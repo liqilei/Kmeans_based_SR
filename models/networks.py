@@ -11,7 +11,7 @@ import models.modules.srcnn as srcnn
 
 def weights_init_normal(m, std=0.02):
     classname = m.__class__.__name__
-    # print('initializing [%s] ...' % classname)
+    print('initializing [%s] ...' % classname)
     if classname.find('Conv') != -1:
         init.normal(m.weight.data, 0.0, std)
         if m.bias is not None:
@@ -27,7 +27,7 @@ def weights_init_normal(m, std=0.02):
 def weights_init_kaiming(m, scale=1):
     classname = m.__class__.__name__
     if classname.find('Conv') != -1:
-        # print('initializing [%s] ...' % classname)
+        print('initializing [%s] ...' % classname)
         init.kaiming_normal(m.weight.data, a=0, mode='fan_in')
         m.weight.data *= scale
         if m.bias is not None:
@@ -44,7 +44,7 @@ def weights_init_kaiming(m, scale=1):
 
 def weights_init_orthogonal(m):
     classname = m.__class__.__name__
-    # print('initializing [%s] ...' % classname)
+    print('initializing [%s] ...' % classname)
     if classname.find('Conv') != -1:
         init.orthogonal(m.weight.data, gain=1)
         if m.bias is not None:

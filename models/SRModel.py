@@ -9,7 +9,7 @@ from utils.torchsummary import summary as tc_summary
 
 from .networks import create_model
 from .base_solver import BaseSolver
-
+from .networks import init_weights
 
 class SRModel(BaseSolver):
     def __init__(self, opt):
@@ -67,6 +67,9 @@ class SRModel(BaseSolver):
 
     def name(self):
         return 'SRModel'
+
+    def net_init(self, init_type='kaiming'):
+        init_weights(self.model, init_type)
 
     def feed_data(self, batch):
         input, target = batch['LR'], batch['HR']

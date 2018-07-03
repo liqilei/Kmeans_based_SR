@@ -89,10 +89,8 @@ for batchno = 1:floor(count/chunksz)
     for i = 1 : num_cluster
        h5write(savecoeffpath,['/coeff' num2str(i)],single(batchcoeff(:,:,i)), startloc.dat, size(batchcoeff(:,:,i)));    
     end
-    
     info=h5info(savecoeffpath);
     curr_dat_sz=info.Datasets(1).Dataspace.Size;    
-    
     totalct = curr_dat_sz(end);
 end
 h5disp(savecoeffpath);

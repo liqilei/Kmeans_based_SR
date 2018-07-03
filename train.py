@@ -66,6 +66,7 @@ def main():
     # TODO: design an exp that can obtain the location of the biggest error
     solver = SRModel(opt)
     solver.summary(train_set[0]['LR'].size())
+    solver.net_init()
 
     print('[Start Training]')
 

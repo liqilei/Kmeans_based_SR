@@ -2,6 +2,9 @@ import os
 import torch.utils.data as data
 import h5py
 import torch
+import numpy as np
+
+from data import common
 
 class LRHRH5Dataset(data.Dataset):
     '''
@@ -20,8 +23,8 @@ class LRHRH5Dataset(data.Dataset):
         self.h5data_coeff = None
 
         # tie with h5 paths
-        self.file_data = h5py.File(opt['dataroot_H5']+'.h5', 'r')
-        self.file_coeff = h5py.File(opt['dataroot_H5']+'cof.h5', 'r')
+        self.file_data = h5py.File(opt['dataroot_H5'], 'r', swmr=True)
+        self.file_coeff = h5py.File(opt['coeffroot_H5'], 'r', swmr=True)
 
         # read dataset from h5 files
         self.h5data_HR = self.file_data['label']
@@ -38,10 +41,12 @@ class LRHRH5Dataset(data.Dataset):
     def __getitem__(self, index):
         patch_LR = self.h5data_LR[index]
         patch_HR = self.h5data_HR[index]
-        coeff = [cof[:, index][0] for cof in self.h5data_coeff]
+        coeff = [cof[index, :][0] for cof in self.h5data_coeff]
+        if self.opt['phase'] == 'train':
+            patch_LR, patch_HR = common.h5_augment([patch_LR, patch_HR], self.opt['use_flip'], self.opt['use_rot'])
 
-        tensor_LR = torch.from_numpy(patch_LR).float()
-        tensor_HR = torch.from_numpy(patch_HR).float()
+        tensor_LR = torch.from_numpy(np.ascontiguousarray(patch_LR)).float()
+        tensor_HR = torch.from_numpy(np.ascontiguousarray(patch_HR)).float()
 
         return {'LR': tensor_LR, 'HR': tensor_HR, 'coeff': coeff}
 
