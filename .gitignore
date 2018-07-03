@@ -1,4 +1,9 @@
 .vs/
 .idea/
-*.pyc
 experiments/
+
+*.pyc
+*.jpg
+*.png
+*.bmp
+
