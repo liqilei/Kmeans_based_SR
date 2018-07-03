@@ -8,7 +8,7 @@ def create_dataloader(dataset, dataset_opt):
         shuffle = True
         num_workers = dataset_opt['n_workers']
     else:
-        batch_size = 1
+        batch_size = dataset_opt['batch_size']
         shuffle = False
         num_workers = 1
     return torch.utils.data.DataLoader(

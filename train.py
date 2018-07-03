@@ -14,6 +14,7 @@ from data import create_dataset
 
 
 def main():
+    # get options
     parser = argparse.ArgumentParser(description='Train Super Resolution Models')
     parser.add_argument('-opt', type=str, required=True, help='Path to options JSON file.')
     opt = option.parse(parser.parse_args().opt, is_train=True)
@@ -71,6 +72,7 @@ def main():
 
     start_time = time.time()
 
+    # resume from the latest epoch
     start_epoch = 1
     if opt['train']['resume']:
         checkpoint_path = os.path.join(solver.checkpoint_dir,'checkpoint.pth')
@@ -83,6 +85,7 @@ def main():
         solver.results = checkpoint['results']
         print('=> Done.')
 
+    # start train
     for epoch in range(start_epoch, NUM_EPOCH + 1):
         # Initialization
         solver.training_loss = 0.0
@@ -108,8 +111,9 @@ def main():
 
         train_bar.close()
         time_elapse = time.time() - start_time
-        start_time = time.time()
+        print('Train Time: %f seconds' % (time_elapse))
 
+        start_time = time.time()
         # validate
         val_results = {'batch_size': 0, 'val_loss': 0.0, 'psnr': 0.0, 'ssim': 0.0}
 
@@ -119,52 +123,19 @@ def main():
             start_time = time.time()
             solver.val_loss = 0.0
 
-            index = 0   # TODO: better approach?
-            visuals_list = []
+            val_bar = tqdm(val_loader)
 
-            for iter, batch in enumerate(val_loader):
+            for iter, batch in enumerate(val_bar):
                 solver.feed_data(batch)
                 iter_loss = solver.test()
                 batch_size = batch['LR'].size(0)
                 val_results['batch_size'] += batch_size
-
-                visuals = solver.get_current_visual()
-
-                sr_img = util.tensor2img_np(visuals['SR'])  # uint8
-                gt_img = util.tensor2img_np(visuals['HR'])  # uint8
-
-                # calculate PSNR
-                crop_size = opt['scale'] + 2
-                cropped_sr_img = sr_img[crop_size:-crop_size, crop_size:-crop_size, :]
-                cropped_gt_img = gt_img[crop_size:-crop_size, crop_size:-crop_size, :]
-
                 val_results['val_loss'] += iter_loss * batch_size
-                val_results['psnr'] += util.psnr(cropped_sr_img, cropped_gt_img)
-                # val_results['psnr']  += util.psnr(sr_img, gt_img))
-                # TODO: ssim multichannel ? We should read some recent papers to confirm it
-                val_results['ssim'] += util.ssim(cropped_sr_img, cropped_gt_img, multichannel=True)
-                # val_results['ssim'] += util.ssim(tensor2numpy4eval(solver.SR.squeeze(0)), tensor2numpy4eval(solver.var_HR.squeeze(0)), multichannel=True)
-
                 if opt['mode'] == 'srgan':
                     pass    # TODO
 
-                visuals_list.extend([util.display_transform()(visuals['HR'].squeeze(0)),
-                                     util.display_transform()(visuals['LR'].squeeze(0)),
-                                     util.display_transform()(visuals['SR'].squeeze(0))])
-
-            avg_psnr = val_results['psnr']/val_results['batch_size']
-            avg_ssim = val_results['ssim']/val_results['batch_size']
-            print('Valid Loss: %.4f | Avg. PSNR: %.4f | Avg. SSIM: %.4f'%(iter_loss, avg_psnr, avg_ssim))
-            val_images = torch.stack(visuals_list)
-            val_images = torch.chunk(val_images, val_images.size(0)//15)
-
-            vis_index = 1
-            for image in val_images:
-                image = thutil.make_grid(image, nrow=3, padding=5)
-                thutil.save_image(image, os.path.join(solver.vis_dir, 'epoch_%d_index_%d.png'%(epoch, vis_index)), padding=5)
-                vis_index += 1
-
-            time_elapse = start_time - time.time()
+            time_elapse = time.time() - start_time
+            print('Valid Time: %f seconds | Valid Loss: %.4f '%(time_elapse, iter_loss))
 
             #if epoch%solver.log_step == 0 and epoch != 0:
             # tensorboard visualization
@@ -176,16 +147,14 @@ def main():
 
             # statistics
             if opt['mode'] == 'sr':
-                solver.results['training_loss'].append(solver.training_loss.data.cpu().numpy()[0])
-                solver.results['val_loss'].append(solver.val_loss.data.cpu().numpy()[0])
-                solver.results['psnr'].append(avg_psnr)
-                solver.results['ssim'].append(avg_ssim)
+                solver.results['training_loss'].append(float(solver.training_loss.data.cpu().numpy()))
+                solver.results['val_loss'].append(float(solver.val_loss.data.cpu().numpy()))
             else:
                 pass    # TODO
 
             is_best = False
-            if solver.best_prec < solver.results['psnr'][-1]:
-                solver.best_prec = solver.results['psnr'][-1]
+            if solver.best_prec < solver.results['val_loss'][-1]:
+                solver.best_prec = solver.results['val_loss'][-1]
                 is_best = True
 
             solver.save(epoch, is_best)
@@ -196,8 +165,6 @@ def main():
     data_frame = pd.DataFrame(
         data={'training_loss': solver.results['training_loss']
             , 'val_loss': solver.results['val_loss']
-            , 'psnr': solver.results['psnr']
-            , 'ssim': solver.results['ssim']
               },
         index=range(1, NUM_EPOCH+1)
     )

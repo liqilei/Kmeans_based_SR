@@ -6,6 +6,10 @@ import random
 import numpy as np
 import torch
 import cv2
+# TODO
+import skimage.io as sio
+import skimage.color as sc
+import skimage.transform as st
 
 IMG_EXTENSIONS = ['.jpg', '.JPG', '.jpeg', '.JPEG', '.png', '.PNG', '.ppm', '.PPM', '.bmp', '.BMP']
 
@@ -86,6 +90,21 @@ def read_img(env, path):
 # image processing
 # process on numpy image
 ####################
+def set_channel(l, n_channel):
+    def _set_channel(img):
+        if img.ndim == 2:
+            img = np.expand_dims(img, axis=2)
+
+        c = img.shape[2]
+        if n_channel == 1 and c == 3:
+            img = np.expand_dims(sc.rgb2ycbcr(img)[:, :, 0], 2)
+        elif n_channel == 3 and c == 1:
+            img = np.concatenate([img] * n_channel, 2)
+
+        return img
+
+    return [_set_channel(_l) for _l in l]
+
 def np2Tensor(l):
     def _np2Tensor(img):
         if img.shape[2] == 3:
