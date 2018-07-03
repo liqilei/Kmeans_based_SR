@@ -2,7 +2,6 @@ import argparse, time, os
 import random
 
 import torch
-import torchvision.utils as thutil
 import pandas as pd
 from tqdm import tqdm
 
@@ -111,7 +110,7 @@ def main():
 
         train_bar.close()
         time_elapse = time.time() - start_time
-        print('Train Time: %f seconds' % (time_elapse))
+        print('\n Train Time: %f seconds' % (time_elapse))
 
         start_time = time.time()
         # validate
@@ -135,7 +134,7 @@ def main():
                     pass    # TODO
 
             time_elapse = time.time() - start_time
-            print('Valid Time: %f seconds | Valid Loss: %.4f '%(time_elapse, iter_loss))
+            print('\n Valid Time: %f seconds | Valid Loss: %.4f '%(time_elapse, iter_loss))
 
             #if epoch%solver.log_step == 0 and epoch != 0:
             # tensorboard visualization

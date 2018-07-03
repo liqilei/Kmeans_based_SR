@@ -6,4 +6,5 @@ experiments/
 *.jpg
 *.png
 *.bmp
-
+*.h5
+*.mat
