@@ -34,7 +34,7 @@ def main():
         opt['datasets']['train']['dataroot_HR'] = '/home/ser606/ZhenLi/data/DIV2K/DIV2K_train_HR_debug'
         opt['datasets']['train']['dataroot_LR'] = '/home/ser606/ZhenLi/data/DIV2K/DIV2K_train_LR_debug'
     else:
-        NUM_EPOCH = int(opt['num_epochs'])
+        NUM_EPOCH = int(opt['train']['num_epochs'])
 
     # random seed
     seed = opt['train']['manual_seed']
@@ -111,7 +111,7 @@ def main():
 
         train_bar.close()
         time_elapse = time.time() - start_time
-        print('\n Train Time: %f seconds' % (time_elapse))
+        print('\n Train Time: %f seconds | Learning Rate: %f' % (time_elapse, solver.optimizer.defaults['lr']))
 
         start_time = time.time()
         # validate
@@ -135,7 +135,7 @@ def main():
                     pass    # TODO
 
             time_elapse = time.time() - start_time
-            print('\n Valid Time: %f seconds | Valid Loss: %.4f '%(time_elapse, iter_loss))
+            print('\n Valid Time: %f seconds | Valid Loss: %.8f '%(time_elapse, iter_loss))
 
             #if epoch%solver.log_step == 0 and epoch != 0:
             # tensorboard visualization
