@@ -3,14 +3,12 @@ This repository is developed by [@penguin1214](https://github.com/penguin1214) a
 Code structure is inspired by [pytorch-cyclegan](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) and [BasicSR](https://github.com/xinntao/BasicSR).
 
 ## Notice
-- `num_workers` in **options/train/train.json** should fix at 1. This is a bug for h5py. I suggest us fix this bug.
+- `num_workers` in **options/train/train.json** should fix at 1. If you want to use multiple `num_workers`. You should firstly install **hdf5 package with parallel settings**. You can find solutions in [here](http://docs.h5py.org/en/latest/build.html#building-against-parallel-hdf5)
 
 ## TODO
-- 先跑通SRCNN
 - 跑通VDSR
 - Kmeans
-- data processing code in **scripts**. You can find referenced code in [EDSR](https://github.com/thstkdgus35/EDSR-PyTorch/blob/master/code/data/demo.py)
-- test code in **train.py**
+- test code in matlab
 
 ## Requirements
 - Python3
