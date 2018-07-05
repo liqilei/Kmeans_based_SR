@@ -16,20 +16,20 @@
 close all;
 clear all;
 
-run matconvnet/matlab/vl_setupnn;
+run matconvnet-1.0-beta25/matlab/vl_setupnn;
 
 %% read ground truth image
 % im_path = 'Set5/';
-im_path = 'Set14/';
+im_path = '/home/server606/Downloads/SRCNN/Set14/';
 im_dir = dir(fullfile(im_path, '*bmp'));
 im_num = length(im_dir);
 
 %% initialization
 up_scale = 3;
 num_cluster = 2;
-model = '../UBDSR2x3_11017000.mat';
+model = '/home/server606/Ruby/Kmeans_based_SR/experiments/SRCNN_K_in1f64b4_x4_archived_180705-150138/epoch/best_epoch.mat';
 % kmeanspath = 'kmeansBest.mat';   % The best model 
-kmeanspath = ['../Data/x' num2str(up_scale) '/kmeansc' num2str(num_cluster) '.mat'];
+kmeanspath = ['/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x' num2str(up_scale) '/kmeansc' num2str(num_cluster) '.mat'];
 load(kmeanspath);
 
 stride = 1; % same as the convolution stride
@@ -94,7 +94,8 @@ for img_idx = 1:im_num
     fprintf('UBDSR...\n');
     im_sr = UBDSR_matconv(im_b, model, num_cluster); % TODO : Speed this using GPU
     
-    im_h = im_b;
+%     im_h = (im_sr(:,:,1).*cofMap(:,:,2)) + (im_sr(:,:,2).*cofMap(:,:,1));
+    im_h = 0;
     for i = 1 :num_cluster
         im_h = im_h + (im_sr(:,:,i).*cofMap(:,:,i));
     end
