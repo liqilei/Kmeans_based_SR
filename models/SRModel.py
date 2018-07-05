@@ -118,7 +118,7 @@ class SRModel(BaseSolver):
         print('[Saving checkpoint to %s ...]'%filename)
         state = {
             'epoch': epoch,
-            'state_dict': self.model.state_dict(),
+            'state_dict': self.model,
             'optimizer': self.optimizer.state_dict(),
             'best_prec': self.best_prec,
             'results': self.results
@@ -145,8 +145,8 @@ class SRModel(BaseSolver):
     def current_learning_rate(self):
         return self.optimizer.param_groups[0]['lr']
 
-    def update_learning_rate(self):
-        self.scheduler.step()
+    def update_learning_rate(self, epoch):
+        self.scheduler.step(epoch)
 
     # TODO
     """

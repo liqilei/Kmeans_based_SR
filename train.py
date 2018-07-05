@@ -66,7 +66,6 @@ def main():
     # TODO: design an exp that can obtain the location of the biggest error
     solver = SRModel(opt)
     solver.summary(train_set[0]['LR'].size())
-    solver.net_init()
 
     print('[Start Training]')
 
@@ -78,12 +77,14 @@ def main():
         checkpoint_path = os.path.join(solver.checkpoint_dir,'checkpoint.pth')
         print('[Loading checkpoint from %s...]'%checkpoint_path)
         checkpoint = torch.load(checkpoint_path)
-        solver.model.load_state_dict(checkpoint['state_dict'])
+        solver.model.load_state_dict(checkpoint['state_dict'].state_dict())
         start_epoch = checkpoint['epoch'] + 1  # Because the last state had been saved
         solver.optimizer.load_state_dict(checkpoint['optimizer'])
         solver.best_prec = checkpoint['best_prec']
         solver.results = checkpoint['results']
         print('=> Done.')
+    else:
+        solver.net_init()
 
     # start train
     for epoch in range(start_epoch, NUM_EPOCH + 1):
@@ -104,22 +105,18 @@ def main():
 
             if opt['mode'] == 'sr':
                 training_results['training_loss'] += iter_loss * batch_size
-                train_bar.set_description(desc='[%d/%d] Loss: %.4f ' % (
+                train_bar.set_description(desc='[%d/%d] Train | Loss: %.4f ' % (
                     epoch, NUM_EPOCH, iter_loss))
             else:
                 pass    # TODO
 
         train_bar.close()
         time_elapse = time.time() - start_time
-        print('\n Train Time: %f seconds | Learning Rate: %f' % (time_elapse, solver.optimizer.defaults['lr']))
-
         start_time = time.time()
         # validate
         val_results = {'batch_size': 0, 'val_loss': 0.0, 'psnr': 0.0, 'ssim': 0.0}
 
         if epoch % solver.val_step == 0 and epoch != 0:
-
-            print('[Validating...]')
             start_time = time.time()
             solver.val_loss = 0.0
 
@@ -130,17 +127,21 @@ def main():
                 iter_loss = solver.test()
                 batch_size = batch['LR'].size(0)
                 val_results['batch_size'] += batch_size
-                val_results['val_loss'] += iter_loss * batch_size
+
+                if opt['mode'] == 'sr':
+                    val_results['val_loss'] += iter_loss * batch_size
+                    val_bar.set_description(desc='[%d/%d] Valid | Loss: %.4f ' % (epoch, NUM_EPOCH, iter_loss))
                 if opt['mode'] == 'srgan':
                     pass    # TODO
 
             time_elapse = time.time() - start_time
-            print('\n Valid Time: %f seconds | Valid Loss: %.8f '%(time_elapse, iter_loss))
 
             #if epoch%solver.log_step == 0 and epoch != 0:
             # tensorboard visualization
             solver.training_loss = training_results['training_loss'] / training_results['batch_size']
             solver.val_loss = val_results['val_loss'] / val_results['batch_size']
+
+            print('\n Train Loss: %.8f | Valid Loss: %.8f | Learning Rate: %f' %(solver.training_loss, solver.val_loss, solver.current_learning_rate()))
 
             # TODO: I haven't installed tensorflow, because I should install cuda 9.0 first
             # solver.tf_log(epoch)
@@ -153,14 +154,16 @@ def main():
                 pass    # TODO
 
             is_best = False
-            if solver.best_prec < solver.results['val_loss'][-1]:
+            if solver.best_prec > solver.results['val_loss'][-1]:
                 solver.best_prec = solver.results['val_loss'][-1]
                 is_best = True
+                best_epoch = epoch
 
+            print('The lowest validation error is in %d'%best_epoch)
             solver.save(epoch, is_best)
 
         # update lr
-        solver.update_learning_rate()
+        solver.update_learning_rate(epoch)
 
     data_frame = pd.DataFrame(
         data={'training_loss': solver.results['training_loss']
