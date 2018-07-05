@@ -15,12 +15,13 @@ class SRModel(BaseSolver):
     def __init__(self, opt):
         super(SRModel, self).__init__(opt)
         self.train_opt = opt['train']
-
+	
         self.LR = self.Tensor()
         self.HR = self.Tensor()
         self.var_LR = None
         self.var_HR = None
-
+	
+        self.best_prec = float("inf")
         self.results = {'training_loss': [],
                         'val_loss': [],
                         'psnr': [],

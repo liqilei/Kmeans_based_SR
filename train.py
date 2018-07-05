@@ -86,6 +86,7 @@ def main():
     else:
         solver.net_init()
 
+    best_epoch = 0
     # start train
     for epoch in range(start_epoch, NUM_EPOCH + 1):
         # Initialization
