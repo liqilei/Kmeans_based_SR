@@ -3,12 +3,13 @@ This repository is developed by [@penguin1214](https://github.com/penguin1214) a
 Code structure is inspired by [pytorch-cyclegan](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) and [BasicSR](https://github.com/xinntao/BasicSR).
 
 ## Notice
-- `num_workers` in **options/train/train.json** should fix at 1. If you want to use multiple `num_workers`. You should firstly install **hdf5 package with parallel settings**. You can find solutions in [here](http://docs.h5py.org/en/latest/build.html#building-against-parallel-hdf5)
+- `num_workers` in **options/train/train.json** should fix at 1. If you want to use multiple `num_workers`. You should firstly install **hdf5 package with parallel settings**. You can find solutions from [here](http://docs.h5py.org/en/latest/build.html#building-against-parallel-hdf5)
 
 ## TODO
 - 跑通VDSR
 - Kmeans
 - test code in matlab
+- device control (GPU0, GPU1)
 
 ## Requirements
 - Python3
