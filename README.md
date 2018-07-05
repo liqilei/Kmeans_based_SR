@@ -23,12 +23,12 @@ Code structure is inspired by [pytorch-cyclegan](https://github.com/junyanz/pyto
 -- VOC2012
 
 -- models (算法模块)  
-    models.modules --> modules within networks
-    models.modules.blocks --> basic blocks    
-    models.modules.xxx_arch --> 特定网络的 building blocks 和 网络的完整结构
-    models --> solver classes
-    models.base_model --> base class solver
-    models.networks --> utilitie
+    models.modules --> modules within networks </br>
+    models.modules.blocks --> basic blocks </br>   
+    models.modules.xxx_arch --> 特定网络的 building blocks 和 网络的完整结构 </br>
+    models --> solver classes </br>
+    models.base_model --> base class solver </br>
+    models.networks --> utilitie </br>
 
 -- options (输入参数)  
 -- train (训练参数)  
