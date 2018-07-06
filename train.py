@@ -1,5 +1,6 @@
 import argparse, time, os
 import random
+os.environ['CUDA_VISIBLE_DEVICES']='0' # You can specify your GPU device here. I failed to perform it by `torch.cuda.set_device()`. 
 
 import torch
 import pandas as pd
@@ -10,7 +11,6 @@ from utils import util
 from models.SRModel import SRModel
 from data import create_dataloader
 from data import create_dataset
-
 
 def main():
     # get options

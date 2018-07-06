@@ -78,9 +78,8 @@ class SRModel(BaseSolver):
         self.var_LR = Variable(self.LR)
         self.HR.resize_(target.size()).copy_(target)
         self.var_HR = Variable(self.HR)
-        if 'num_coeff' in self.train_opt.keys():
+        if type(self.model.module).__name__ == 'srcnn_k':
             self.coeff = batch['coeff']
-        pass
 
     def summary(self, input_size):
         print('========================= Model Summary ========================')
@@ -92,7 +91,7 @@ class SRModel(BaseSolver):
 
     def train_step(self):
         self.optimizer.zero_grad()
-        if 'num_coeff' in self.train_opt.keys():
+        if type(self.model.module).__name__ == 'srcnn_k':
             self.SR = self.model(self.var_LR, self.coeff)
         else:
             self.SR = self.model(self.var_LR)
@@ -106,7 +105,7 @@ class SRModel(BaseSolver):
 
     def test(self):
         self.model.eval()
-        if 'num_coeff' in self.train_opt.keys():
+        if type(self.model.module).__name__ == 'srcnn_k':
             self.SR = self.model(self.var_LR, self.coeff)
         else:
             self.SR = self.model(self.var_LR)

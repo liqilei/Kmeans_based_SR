@@ -10,8 +10,8 @@
       ,"mode": "LRHR_H5"
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/ser606/qilei/H5Data/x3/trainc2.h5"
-      ,"coeffroot_H5": "/home/ser606/qilei/H5Data/x3/traincofc2.h5"
+      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x3/trainc2.h5"
+      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x3/traincofc2.h5"
       ,"n_workers": 1
       ,"batch_size": 128
       ,"HR_size": 128
@@ -25,13 +25,13 @@
       ,"batch_size": 2
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/ser606/qilei/H5Data/x3/testc2.h5"
-      ,"coeffroot_H5": "/home/ser606/qilei/H5Data/x3/testcofc2.h5"
+      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x3/testc2.h5"
+      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x3/testcofc2.h5"
     }
   }
   ,"networks": {
     "G": {
-    "which_model": "srcnn_k"
+    "which_model": "srcnn"
     ,"norm_type": "None"
     ,"mode": "NAC"
     ,"num_features": 64
