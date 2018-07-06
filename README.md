@@ -5,11 +5,12 @@ Code structure is inspired by [pytorch-cyclegan](https://github.com/junyanz/pyto
 ## Notice
 - `num_workers` in **options/train/train.json** should fix at 1. If you want to use multiple `num_workers`. You should firstly install **hdf5 package with parallel settings**. You can find solutions from [here](http://docs.h5py.org/en/latest/build.html#building-against-parallel-hdf5)
 
+## Running now
+- SRCNN_K: x3: C1 C2
+
 ## TODO
-- 跑通VDSR
-- Kmeans
-- test code in matlab
-- device control (GPU0, GPU1)
+- SRCNN_K: x3: C3 C4 C5 C6; x2: Best; x4: Best.
+- VDSR_K: x3: C1 C2 C3 C4 C5 C6; x2: Best; x4: Best
 
 ## Requirements
 - Python3
