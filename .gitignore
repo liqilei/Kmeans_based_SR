@@ -8,3 +8,4 @@ experiments/
 *.bmp
 *.h5
 *.mat
+*.json
