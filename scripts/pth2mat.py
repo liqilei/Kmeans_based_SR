@@ -5,6 +5,7 @@ import scipy.io
 import os
 import numpy as np
 from collections import OrderedDict
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 
 parser = argparse.ArgumentParser(description='Convert model from PyTorch to MATLAB.')
 parser.add_argument('-pytorch_model', type=str, help='It should be a path to its .pth file')
@@ -35,19 +36,23 @@ def params_to_dict(params, dict, key, layer_name):
 
     return dict
 
-checkpoint = torch.load(args_.pytorch_model)
-params = checkpoint['state_dict'].state_dict()
+def main():
+    checkpoint = torch.load(args_.pytorch_model)
+    params = checkpoint['state_dict'].state_dict()
 
-mat_savepath = os.path.join(os.path.dirname(args_.pytorch_model), 'best_epoch.mat')
+    mat_savepath = os.path.join(os.path.dirname(args_.pytorch_model), 'best_epoch.mat')
 
-tmp = OrderedDict()
-for key in params:
-    key_list = key.split('.')
-    new_name = '_'.join(key_list[1:-2])
-    tmp = params_to_dict(params, tmp, key, new_name)
+    tmp = OrderedDict()
+    for key in params:
+        key_list = key.split('.')
+        new_name = '_'.join(key_list[1:-2])
+        tmp = params_to_dict(params, tmp, key, new_name)
 
-params = tmp
+    params = tmp
 
-print('Saving network to {}'.format(mat_savepath))
+    print('Saving network to {}'.format(mat_savepath))
 
-scipy.io.savemat(mat_savepath, params, oned_as='column')
+    scipy.io.savemat(mat_savepath, params, oned_as='column')
+
+if __name__ == '__main__':
+    main()
