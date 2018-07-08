@@ -1,14 +1,13 @@
 clear;close all;
 %% settings
-folder = '../datasets/Train_Image';
+folder = '../datasets/Train_Image_aug';
 
-size_input = 33;
-size_label = 21;
-scale = 3;
-stride = 14;
+size_input = 41;
+size_label = 41;
+stride = 21;
 num_cluster = 2;
 
-savefolder = ['../datasets/H5Data/x' num2str(scale)];
+savefolder = ['../datasets/H5Data/c' num2str(num_cluster)];
 
 if exist(savefolder, 'dir')
    fprintf('Warning: replacing existing dir %s \n', savefolder);
@@ -16,9 +15,9 @@ if exist(savefolder, 'dir')
 end 
 mkdir(savefolder);
 
-savetrainpath = [savefolder '/trainc' num2str(num_cluster) '.h5'];
-savecoeffpath = [savefolder '/traincofc' num2str(num_cluster) '.h5'];
-savekmeans = [savefolder '/kmeansc' num2str(num_cluster) '.mat'];
+savetrainpath = [savefolder '/train.h5'];
+savecoeffpath = [savefolder '/train.h5'];
+savekmeans = [savefolder '/kmeans.mat'];
 
 %% initialization
 data = zeros(size_input, size_input, 1, 1);
@@ -28,32 +27,35 @@ count = 0;
 
 %% generate data
 filepaths = [dir(fullfile(folder,'*.bmp'));dir(fullfile(folder,'*.jpg'));dir(fullfile(folder,'*.png'))];
-    
-for i = 1 : length(filepaths)
-    fprintf('Generating Data...picture_no:%d\n',i);
-    image = imread(fullfile(folder,filepaths(i).name));
-    image = rgb2ycbcr(image);
-    image = im2double(image(:, :, 1));
-    
-    im_label = modcrop(image, scale);
-    [hei,wid] = size(im_label);
-    
-    % Gaussian Processing then downsampling and unsampling
-    % gaussian_filter = fspecial('gaussian', [3 3], 1.6);
-    % im_blur = imfilter(im_label, gaussian_filter, 'replicate');
-    % im_input = imresize(imresize(im_blur, 1/scale,'bicubic'),[hei,wid],'bicubic');
-    
-    % Direct Downsampling and Unsampling
-     im_input = imresize(imresize(im_label,1/scale,'bicubic'),[hei,wid],'bicubic');
+ 
+for scale = 2:4
+    for i = 1 : length(filepaths)
+        fprintf('Generating Data...picture_no:%d\n',i);
+        image = imread(fullfile(folder,filepaths(i).name));
+        image = rgb2ycbcr(image);
+        image = im2double(image(:, :, 1));
 
-    for x = 1 : stride : hei-size_input+1
-        for y = 1 :stride : wid-size_input+1            
-            subim_input = im_input(x : x+size_input-1, y : y+size_input-1);
-            % subim_bic = im_input(x+padding : x+padding+size_label-1, y+padding : y+padding+size_label-1);
-            subim_gt = im_label(x+padding : x+padding+size_label-1, y+padding : y+padding+size_label-1);
-            count = count+1;
-            data(:, :, 1, count) = subim_input;
-            label(:, :, 1, count) = subim_gt;
+        im_label = modcrop(image, scale);
+        [hei,wid] = size(im_label);
+
+        % Gaussian Processing then downsampling and unsampling
+        % gaussian_filter = fspecial('gaussian', [3 3], 1.6);
+        % im_blur = imfilter(im_label, gaussian_filter, 'replicate');
+        % im_input = imresize(imresize(im_blur, 1/scale,'bicubic'),[hei,wid],'bicubic');
+
+        % Direct Downsampling and Unsampling
+         im_input = imresize(imresize(im_label,1/scale,'bicubic'),[hei,wid],'bicubic');
+
+        for x = 1 : stride : hei-size_input+1
+            for y = 1 :stride : wid-size_input+1            
+                subim_input = im_input(x : x+size_input-1, y : y+size_input-1);
+                % subim_bic = im_input(x+padding : x+padding+size_label-1, y+padding : y+padding+size_label-1);
+                subim_gt = im_label(x+padding : x+padding+size_label-1, y+padding : y+padding+size_label-1);
+                
+                count = count+1;
+                data(:, :, 1, count) = subim_input;
+                label(:, :, 1, count) = subim_gt;
+            end
         end
     end
 end
@@ -84,7 +86,7 @@ save(savekmeans,'C');
 % h5write(savekmeans,'/data',single(C), [1,1], size(C));
 
 %% writing coeff into HDF5 
-chunksz = 128;
+chunksz = 64;
 totalct = 0;
 if exist(savecoeffpath, 'file')
    fprintf('Warning: replacing existing file %s \n', savecoeffpath);

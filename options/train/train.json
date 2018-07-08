@@ -75,7 +75,7 @@
     ,"num_epochs": 500
     ,"log_step": 1
     ,"val_step": 1
-    ,"resume": false
-    ,"resume_path": "/home/ser606/qilei/Kmeans_based_SR/experiments/SRCNN_K_in1f64b4_x3"
+    ,"resume": true
+    ,"resume_path": "/home/server606/Ruby/Kmeans_based_SR/experiments/SRCNN_in1f64b4_x3"
   }
 }

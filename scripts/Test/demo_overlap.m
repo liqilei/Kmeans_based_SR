@@ -27,7 +27,7 @@ im_num = length(im_dir);
 %% initialization
 up_scale = 3;
 num_cluster = 2;
-model = '/home/server606/Ruby/Kmeans_based_SR/experiments/SRCNN_K_in1f64b4_x4_archived_180705-150138/epoch/best_epoch.mat';
+model = '/home/server606/Ruby/Kmeans_based_SR/experiments/SRCNN_in1f64b4_x3/epoch/best_epoch.mat';
 % kmeanspath = 'kmeansBest.mat';   % The best model 
 kmeanspath = ['/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x' num2str(up_scale) '/kmeansc' num2str(num_cluster) '.mat'];
 load(kmeanspath);
@@ -92,13 +92,19 @@ for img_idx = 1:im_num
     %% UBDSR
     tic;
     fprintf('UBDSR...\n');
-    im_sr = UBDSR_matconv(im_b, model, num_cluster); % TODO : Speed this using GPU
-    
+    % im_sr = UBDSR_matconv(im_b, model, num_cluster); 
+    im_sr = SRCNN_matconv(im_b, model, num_cluster); 
+
+    im_h = im_sr;
+ 
+%     im_h = im_sr(:,:,1)*0.5 + im_sr(:,:,2)*0.5
+
 %     im_h = (im_sr(:,:,1).*cofMap(:,:,2)) + (im_sr(:,:,2).*cofMap(:,:,1));
-    im_h = 0;
-    for i = 1 :num_cluster
-        im_h = im_h + (im_sr(:,:,i).*cofMap(:,:,i));
-    end
+
+%     im_h = 0;
+%     for i = 1 :num_cluster
+%         im_h = im_h + (im_sr(:,:,i).*cofMap(:,:,i));
+%     end
     results(img_idx).time = toc;    
 
     %% remove border
