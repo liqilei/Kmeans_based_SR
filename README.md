@@ -6,13 +6,13 @@ Code structure is inspired by [pytorch-cyclegan](https://github.com/junyanz/pyto
 - `num_workers` in **options/train/train.json** should fix at 1. If you want to use multiple `num_workers`. You should firstly install **hdf5 package with parallel settings**. You can find solutions from [here](http://docs.h5py.org/en/latest/build.html#building-against-parallel-hdf5)
 
 ## Running now
+- VDSR baseline : Every epoch takes 5 minutes. 80 epochs totally.
 
 ## TODO
 ### Zhen Li
-Deadline: 7.9
-- VDSR : complete baseline 
-- Prepare data for VDSR
-- run VDSR
+Deadline: 7.10
+- Check code for VDSR baseline
+- VDSR : complete Kmeans train
 
 ### Qilei Li
 

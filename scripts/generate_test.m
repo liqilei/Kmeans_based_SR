@@ -1,17 +1,17 @@
 clear;close all;
 %% settings
 folder = '../datasets/Test_Image/Set14';
-size_input = 33;
-size_label = 21;
-scale = 3;
+size_input = 41;
+size_label = 41;
+% scale = 3;
 stride = 21 ; 
 num_cluster = 2;
 
-savefolder = ['../datasets/H5Data/x' num2str(scale)];
+savefolder = ['../datasets/H5Data/c' num2str(num_cluster)];
 
-savetestpath = [savefolder '/testc' num2str(num_cluster) '.h5'];
-savecoeffpath = [savefolder '/testcofc' num2str(num_cluster) '.h5'];
-savekmeans = [savefolder '/kmeansc' num2str(num_cluster) '.mat'];
+savetestpath = [savefolder '/test.h5'];
+savecoeffpath = [savefolder '/testcof.h5'];
+savekmeans = [savefolder '/kmeans.mat'];
 
 %% initialization
 load(savekmeans);
@@ -22,32 +22,33 @@ count = 0;
 
 %% generate data
 filepaths = [dir(fullfile(folder,'*.bmp'));dir(fullfile(folder,'*.jpg'));dir(fullfile(folder,'*.png'))];
+for scale = 2 : 4
+    for i = 1 : length(filepaths)
+        fprintf('Generating Data...picture_no:%d\n',i);
+        image = imread(fullfile(folder,filepaths(i).name));
+        image = rgb2ycbcr(image);
+        image = im2double(image(:, :, 1));
 
-for i = 1 : length(filepaths)
-    fprintf('Generating Data...picture_no:%d\n',i);
-    image = imread(fullfile(folder,filepaths(i).name));
-    image = rgb2ycbcr(image);
-    image = im2double(image(:, :, 1));
-    
-    im_label = modcrop(image, scale);    
-    [hei,wid] = size(im_label);
-    
-    % Gaussian Processing then downsampling and unsampling
-%     gaussian_filter = fspecial('gaussian', [3 3], 1.6);
-%     im_blur = imfilter(im_label, gaussian_filter, 'replicate');
-%     im_input = imresize(imresize(im_blur, 1/scale,'bicubic'),[hei,wid],'bicubic');
-    
-    % Direct Downsampling and Unsampling
-    im_input = imresize(imresize(im_label,1/scale,'bicubic'),[hei,wid],'bicubic');
+        im_label = modcrop(image, scale);    
+        [hei,wid] = size(im_label);
 
-    for x = 1 : stride : hei-size_input+1
-        for y = 1 :stride : wid-size_input+1            
-            subim_input = im_input(x : x+size_input-1, y : y+size_input-1);
-            subim_bic = im_input(x+padding : x+padding+size_label-1, y+padding : y+padding+size_label-1);
-            subim_gt = im_label(x+padding : x+padding+size_label-1, y+padding : y+padding+size_label-1);
-            count=count+1;
-            data(:, :, 1, count) = subim_input;
-            label(:, :, 1, count) = subim_gt; % get the residual of the patch
+        % Gaussian Processing then downsampling and unsampling
+    %     gaussian_filter = fspecial('gaussian', [3 3], 1.6);
+    %     im_blur = imfilter(im_label, gaussian_filter, 'replicate');
+    %     im_input = imresize(imresize(im_blur, 1/scale,'bicubic'),[hei,wid],'bicubic');
+
+        % Direct Downsampling and Unsampling
+        im_input = imresize(imresize(im_label,1/scale,'bicubic'),[hei,wid],'bicubic');
+
+        for x = 1 : stride : hei-size_input+1
+            for y = 1 :stride : wid-size_input+1            
+                subim_input = im_input(x : x+size_input-1, y : y+size_input-1);
+                subim_bic = im_input(x+padding : x+padding+size_label-1, y+padding : y+padding+size_label-1);
+                subim_gt = im_label(x+padding : x+padding+size_label-1, y+padding : y+padding+size_label-1);
+                count=count+1;
+                data(:, :, 1, count) = subim_input;
+                label(:, :, 1, count) = subim_gt; % get the residual of the patch
+            end
         end
     end
 end

@@ -4,6 +4,7 @@ from torch.nn import init
 import functools
 import models.modules.archs as Arch
 import models.modules.srcnn as srcnn
+import models.modules.vdsr as vdsr
 
 ####################
 # initialize
@@ -119,6 +120,10 @@ def define_G(opt):
                              num_branch=opt['num_coeff'])
     elif which_model == 'srcnn_k':
         netG = srcnn.srcnn_k(in_channels=opt['in_channels'], out_channels=opt['out_channels'], num_branch=opt['num_coeff'])
+    elif which_model == 'vdsr':
+        netG = vdsr.vdsr(in_channels=opt['in_channels'], out_channels=opt['out_channels'], num_branch=opt['num_coeff'])
+    elif which_model == 'vdsr_k':
+        netG = vdsr.vdsr_k(in_channels=opt['in_channels'], out_channels=opt['out_channels'], num_branch=opt['num_coeff'])
     else:
         raise NotImplementedError("Network [%s] is not recognized." % which_model)
 

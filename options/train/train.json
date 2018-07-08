@@ -10,10 +10,10 @@
       ,"mode": "LRHR_H5"
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x3/trainc2.h5"
-      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x3/traincofc2.h5"
+      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
+      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
       ,"n_workers": 1
-      ,"batch_size": 128
+      ,"batch_size": 64
       ,"HR_size": 128
       ,"use_flip": true
       ,"use_rot": true
@@ -25,13 +25,13 @@
       ,"batch_size": 2
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x3/testc2.h5"
-      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x3/testcofc2.h5"
+      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/test.h5"
+      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/testcof.h5"
     }
   }
   ,"networks": {
     "G": {
-    "which_model": "srcnn"
+    "which_model": "vdsr"
     ,"norm_type": "None"
     ,"mode": "NAC"
     ,"num_features": 64
@@ -57,7 +57,7 @@
     ,"weight_decay_D": 0
     ,"beta1_D": 0.9
     ,"lr_scheme": "MultiStepLR"
-    ,"lr_steps": [100, 200, 300, 400]
+    ,"lr_steps": [100, 200]
     ,"lr_gamma": 0.5
 
     ,"pixel_criterion": "l1"
@@ -72,10 +72,10 @@
     ,"gp_weigth": 10
 
     ,"manual_seed": 0
-    ,"num_epochs": 500
+    ,"num_epochs": 300
     ,"log_step": 1
     ,"val_step": 1
-    ,"resume": true
+    ,"resume": false
     ,"resume_path": "/home/server606/Ruby/Kmeans_based_SR/experiments/SRCNN_in1f64b4_x3"
   }
 }
