@@ -1,6 +1,6 @@
 import argparse, time, os
 import random
-os.environ['CUDA_VISIBLE_DEVICES']='0' # You can specify your GPU device here. I failed to perform it by `torch.cuda.set_device()`. 
+os.environ['CUDA_VISIBLE_DEVICES']='0' # You can specify your GPU device here. I failed to perform it by `torch.cuda.set_device()`.
 
 import torch
 import pandas as pd

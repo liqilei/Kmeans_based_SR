@@ -105,11 +105,12 @@ class SRModel(BaseSolver):
 
     def test(self):
         self.model.eval()
-        if type(self.model.module).__name__ == 'srcnn_k':
-            self.SR = self.model(self.var_LR, self.coeff)
-        else:
-            self.SR = self.model(self.var_LR)
-        loss_pix = self.criterion_pix_weight*self.criterion_pix(self.SR, self.var_HR)
+        with torch.no_grad():
+            if type(self.model.module).__name__ == 'srcnn_k':
+                self.SR = self.model(self.var_LR, self.coeff)
+            else:
+                self.SR = self.model(self.var_LR)  # TODO : analysis why it can occupy most graphic memory
+            loss_pix = self.criterion_pix_weight*self.criterion_pix(self.SR, self.var_HR)
         self.model.train()
         return loss_pix
 

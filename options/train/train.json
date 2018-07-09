@@ -22,7 +22,7 @@
     ,"val": {
       "name": "val_set5"
       ,"mode": "LRHR_H5"
-      ,"batch_size": 2
+      ,"batch_size": 64
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
       ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/test.h5"
