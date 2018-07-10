@@ -15,6 +15,10 @@ Deadline: 7.10
 - VDSR : complete Kmeans train
 
 ### Qilei Li
+Deadline: 7.10
+- Check K-means weight
+- Carefully read VDSR
+- Check network architecture of K-VDSR
 
 ## Requirements
 - Python 3.6
