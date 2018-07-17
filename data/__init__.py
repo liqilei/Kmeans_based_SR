@@ -5,14 +5,14 @@ def create_dataloader(dataset, dataset_opt):
     phase = dataset_opt['phase']
     if phase == 'train':
         batch_size = dataset_opt['batch_size']
-        shuffle = True
+        #shuffle = True
         num_workers = dataset_opt['n_workers']
     else:
         batch_size = dataset_opt['batch_size']
-        shuffle = False
+        #shuffle = False
         num_workers = 1
     return torch.utils.data.DataLoader(
-        dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers, pin_memory=True)
+        dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
 
 
 def create_dataset(dataset_opt):
@@ -25,6 +25,8 @@ def create_dataset(dataset_opt):
         from data.LRHR_seg_dataset import LRHRSegDataset as D
     elif mode == 'LRHR_H5':
         from data.LRHR_H5dataset import LRHRH5Dataset as D
+    elif mode == 'LRHR_H5_M':
+        from data.LRHR_H5dataset4memory import LRHRH5Dataset as D
     else:
         raise NotImplementedError("Dataset [%s] is not recognized." % mode)
     dataset = D(dataset_opt)

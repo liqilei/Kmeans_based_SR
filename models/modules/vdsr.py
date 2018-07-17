@@ -9,12 +9,12 @@ class vdsr(nn.Module):
         super(vdsr, self).__init__()
         self.conv = nn.ModuleList()
 
-        self.conv_in = B.ConvBlock(in_channels, 64, kernel_size=3, norm_type=None, act_type='relu',valid_padding=True)
+        self.conv_in = B.ConvBlock(in_channels, 64, kernel_size=3, norm_type=None, act_type='relu',valid_padding=True, bias=False)
 
         for i in range(18):
-            self.conv.append(B.ConvBlock(64, 64, kernel_size=3, norm_type=None, act_type='relu',valid_padding=True))
+            self.conv.append(B.ConvBlock(64, 64, kernel_size=3, norm_type=None, act_type='relu',valid_padding=True, bias=False))
 
-        self.conv_out = B.ConvBlock(64, out_channels, kernel_size=3, norm_type=None, act_type=None, valid_padding=True)
+        self.conv_out = B.ConvBlock(64, out_channels, kernel_size=3, norm_type=None, act_type=None, valid_padding=True, bias=False)
 
     def forward(self, input):
         x = self.conv_in(input)

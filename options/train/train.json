@@ -1,5 +1,5 @@
 {
-  "name":"SRCNN_K"
+  "name":"VDSR_K"
   ,"exec_debug": false
   ,"net_debug": false
   ,"mode":"sr"
@@ -7,16 +7,16 @@
   ,"datasets": {
     "train": {
       "name": "91Images"
-      ,"mode": "LRHR_H5"
+      ,"mode": "LRHR_H5_m"
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
       ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
       ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
       ,"n_workers": 1
-      ,"batch_size": 64
+      ,"batch_size": 128
       ,"HR_size": 128
-      ,"use_flip": true
-      ,"use_rot": true
+      ,"use_flip": false
+      ,"use_rot": false
       ,"noise": "."
     }
     ,"val": {
@@ -50,17 +50,18 @@
     }
   }
   ,"train": {
-    "lr_G": 0.0001
+    "lr_G": 0.1
     ,"weight_decay_G": 0.0001
     ,"beta1_G": 0.9
     ,"lr_D": 1e-4
     ,"weight_decay_D": 0
     ,"beta1_D": 0.9
+    ,"clip_grad": 0.4
     ,"lr_scheme": "MultiStepLR"
-    ,"lr_steps": [100, 200]
-    ,"lr_gamma": 0.5
+    ,"lr_steps": [9, 19, 29, 39]
+    ,"lr_gamma": 0.1
 
-    ,"pixel_criterion": "l1"
+    ,"pixel_criterion": "l2"
     ,"pixel_weight": 1.0
     ,"feature_criterion": "l1"
     ,"feature_weight": 1.0
@@ -72,10 +73,10 @@
     ,"gp_weigth": 10
 
     ,"manual_seed": 0
-    ,"num_epochs": 300
+    ,"num_epochs": 50
     ,"log_step": 1
     ,"val_step": 1
     ,"resume": false
-    ,"resume_path": "/home/server606/Ruby/Kmeans_based_SR/experiments/SRCNN_in1f64b4_x3"
+    ,"resume_path": "/home/server606/Ruby/Kmeans_based_SR/experiments/VDSR_in1f64b4_x3"
   }
 }

@@ -1,8 +1,15 @@
 import os
+import torch.multiprocessing as mp
+try:
+    mp.set_start_method('spawn')
+except RuntimeError:
+    pass
+
 import torch.utils.data as data
 import h5py
 import torch
 import numpy as np
+from mpi4py import MPI
 
 from data import common
 
@@ -23,13 +30,12 @@ class LRHRH5Dataset(data.Dataset):
         self.h5data_coeff = None
 
         # tie with h5 paths
-        self.file_data = h5py.File(opt['dataroot_H5'], 'r')
-        self.file_coeff = h5py.File(opt['coeffroot_H5'], 'r')
+        self.file_data = h5py.File(opt['dataroot_H5'], 'r', swmr=True)
+        # self.file_coeff = h5py.File(opt['coeffroot_H5'], 'r')
 
         # read dataset from h5 files
-        self.h5data_HR = self.file_data['label']
-        self.h5data_LR = self.file_data['data']
-        self.h5data_coeff = [self.file_coeff[k] for k in list(self.file_coeff.keys())]
+        self.h5data_LR = self.file_data.get('data')
+        self.h5data_HR = self.file_data.get('label')
 
         assert self.h5data_HR.shape[0] > 0, 'Error: HR file are empty.'
 
@@ -38,19 +44,8 @@ class LRHRH5Dataset(data.Dataset):
                 'HR and LR datasets have different number of images - {}, {}.'.format(\
                 self.h5data_HR.shape[0], self.h5data_LR.shape[0])
 
-
     def __getitem__(self, index):
-        patch_LR = self.h5data_LR[index]
-        patch_HR = self.h5data_HR[index]
-        coeff = [cof[index, :][0] for cof in self.h5data_coeff]
-        if self.opt['phase'] == 'train':
-            patch_LR, patch_HR = common.h5_augment([patch_LR, patch_HR], self.opt['use_flip'], self.opt['use_rot'])
-
-        tensor_LR = torch.from_numpy(np.ascontiguousarray(patch_LR)).float()
-        tensor_HR = torch.from_numpy(np.ascontiguousarray(patch_HR)).float()
-
-        return {'LR': tensor_LR, 'HR': tensor_HR, 'coeff': coeff}
-
+        return {'LR': torch.from_numpy(self.h5data_LR[index,:,:,:]), 'HR': torch.from_numpy(self.h5data_HR[index,:,:,:])}
 
     def __len__(self):
         return self.h5data_HR.shape[0]

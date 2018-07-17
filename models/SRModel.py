@@ -41,7 +41,7 @@ class SRModel(BaseSolver):
             if loss_type == 'l1':
                 self.criterion_pix = nn.L1Loss()
             elif loss_type == 'l2':
-                self.criterion_pix = nn.MSELoss()
+                self.criterion_pix = nn.MSELoss(size_average=False)
             else:
                 raise NotImplementedError('[ERROR] Loss type [%s] is not implemented!'%loss_type)
 
@@ -50,13 +50,16 @@ class SRModel(BaseSolver):
             self.criterion_pix_weight = self.train_opt['pixel_weight']
 
             weight_decay = self.train_opt['weight_decay_G'] if self.train_opt['weight_decay_G'] else 0
-            optim_params = []
-            for k, v in self.model.named_parameters():
-                if v.requires_grad:
-                    optim_params.append(v)
-                else:
-                    print('[WARNING] Parameters [%s] will not be optimized!'%k)
-                self.optimizer = optim.Adam(optim_params, lr=self.train_opt['lr_G'], weight_decay=weight_decay)
+            # optim_params = []
+            # for k, v in self.model.named_parameters():
+            #     if v.requires_grad:
+            #         optim_params.append(v)
+            #     else:
+            #         print('[WARNING] Parameters [%s] will not be optimized!'%k)
+
+            # self.optimizer = optim.Adam(optim_params, lr=self.train_opt['lr_G'], weight_decay=weight_decay)
+            # self.optimizer = optim.Adam(self.model.parameters(), lr=self.train_opt['lr_G'], weight_decay=weight_decay)
+            self.optimizer = optim.SGD(self.model.parameters(), lr=self.train_opt['lr_G'], momentum=self.train_opt['beta1_G'], weight_decay=weight_decay)
 
             if self.train_opt['lr_scheme'].lower() == 'multisteplr':
                 self.scheduler = optim.lr_scheduler.MultiStepLR(self.optimizer, self.train_opt['lr_steps'], self.train_opt['lr_gamma'])
@@ -95,8 +98,10 @@ class SRModel(BaseSolver):
             self.SR = self.model(self.var_LR, self.coeff)
         else:
             self.SR = self.model(self.var_LR)
-        loss_pix = self.criterion_pix_weight*self.criterion_pix(self.SR, self.var_HR)
+        loss_pix = self.criterion_pix_weight * self.criterion_pix(self.SR, self.var_HR)
         loss_pix.backward()
+        if self.train_opt['clip_grad']:
+            nn.utils.clip_grad_norm_(self.model.parameters(), self.train_opt['clip_grad'])
         self.optimizer.step()
 
         loss_step = loss_pix
