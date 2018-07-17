@@ -20,20 +20,20 @@ run matconvnet-1.0-beta25/matlab/vl_setupnn;
 
 %% read ground truth image
 % im_path = 'Set5/';
-im_path = '/home/server606/Downloads/SRCNN/Set14/';
+im_path = '/home/ruby/SRdata/Set14';
 im_dir = dir(fullfile(im_path, '*bmp'));
 im_num = length(im_dir);
 
 %% initialization
 up_scale = 3;
 num_cluster = 2;
-model = '/home/server606/Ruby/Kmeans_based_SR/experiments/SRCNN_in1f64b4_x3/epoch/best_epoch.mat';
+model = '/home/ruby/Kmeans_based_SR/experiments/VDSR_in1f64b4_x3/epoch/best_epoch.mat';
 % kmeanspath = 'kmeansBest.mat';   % The best model 
-kmeanspath = ['/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/x' num2str(up_scale) '/kmeansc' num2str(num_cluster) '.mat'];
+kmeanspath = ['/home/ruby/Kmeans_based_SR/datasets/c' num2str(num_cluster) '/kmeans.mat'];
 load(kmeanspath);
 
 stride = 1; % same as the convolution stride
-size_input = 33;
+size_input = 41;
 patchim_b = zeros(size_input, size_input, 1, 1);
 
 %% work on illuminance only
@@ -93,7 +93,8 @@ for img_idx = 1:im_num
     tic;
     fprintf('UBDSR...\n');
     % im_sr = UBDSR_matconv(im_b, model, num_cluster); 
-    im_sr = SRCNN_matconv(im_b, model, num_cluster); 
+    im_sr = VDSR_matconv(im_b, model, num_cluster);
+    % im_sr = SRCNN_matconv(im_b, model, num_cluster); 
 
     im_h = im_sr;
  
