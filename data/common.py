@@ -65,7 +65,7 @@ def _read_lmdb_img(env, path):
     with env.begin(write=False) as txn:
         buf = txn.get(path.encode('ascii'))
         buf_meta = txn.get((path + '.meta').encode('ascii')).decode('ascii')
-    img_flat = np.frombuffer(buf, dtype=np.uint8)
+    img_flat = np.frombuffer(buf, dtype=np.float32)
     H, W, C = [int(s) for s in buf_meta.split(',')]
     img = img_flat.reshape(H, W, C)
     return img

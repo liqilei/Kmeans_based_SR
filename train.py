@@ -1,6 +1,8 @@
 import argparse, time, os
 import random
-os.environ['CUDA_VISIBLE_DEVICES']='0' # You can specify your GPU device here. I failed to perform it by `torch.cuda.set_device()`.
+
+os.environ[
+    'CUDA_VISIBLE_DEVICES'] = '0'  # You can specify your GPU device here. I failed to perform it by `torch.cuda.set_device()`.
 
 import torch
 import pandas as pd
@@ -11,6 +13,7 @@ from utils import util
 from models.SRModel import SRModel
 from data import create_dataloader
 from data import create_dataset
+
 
 def main():
     # get options
@@ -74,8 +77,8 @@ def main():
     # resume from the latest epoch
     start_epoch = 1
     if opt['train']['resume']:
-        checkpoint_path = os.path.join(solver.checkpoint_dir,'checkpoint.pth')
-        print('[Loading checkpoint from %s...]'%checkpoint_path)
+        checkpoint_path = os.path.join(solver.checkpoint_dir, 'checkpoint.pth')
+        print('[Loading checkpoint from %s...]' % checkpoint_path)
         checkpoint = torch.load(checkpoint_path)
         solver.model.load_state_dict(checkpoint['state_dict'].state_dict())
         start_epoch = checkpoint['epoch'] + 1  # Because the last state had been saved
@@ -94,7 +97,7 @@ def main():
         if opt['mode'] == 'sr':
             training_results = {'batch_size': 0, 'training_loss': 0.0}
         else:
-            pass    # TODO
+            pass  # TODO
         train_bar = tqdm(train_loader)
 
         # Train model
@@ -109,7 +112,7 @@ def main():
                 train_bar.set_description(desc='[%d/%d] Train | Loss: %.4f ' % (
                     epoch, NUM_EPOCH, iter_loss))
             else:
-                pass    # TODO
+                pass  # TODO
 
         train_bar.close()
         time_elapse = time.time() - start_time
@@ -133,16 +136,17 @@ def main():
                     val_results['val_loss'] += iter_loss * batch_size
                     val_bar.set_description(desc='[%d/%d] Valid | Loss: %.4f ' % (epoch, NUM_EPOCH, iter_loss))
                 if opt['mode'] == 'srgan':
-                    pass    # TODO
+                    pass  # TODO
 
             time_elapse = time.time() - start_time
 
-            #if epoch%solver.log_step == 0 and epoch != 0:
+            # if epoch%solver.log_step == 0 and epoch != 0:
             # tensorboard visualization
             solver.training_loss = training_results['training_loss'] / training_results['batch_size']
             solver.val_loss = val_results['val_loss'] / val_results['batch_size']
 
-            print('\n Train Loss: %.8f | Valid Loss: %.8f | Learning Rate: %f' %(solver.training_loss, solver.val_loss, solver.current_learning_rate()))
+            print('\n Train Loss: %.8f | Valid Loss: %.8f | Learning Rate: %f' % (
+            solver.training_loss, solver.val_loss, solver.current_learning_rate()))
 
             # TODO: I haven't installed tensorflow, because I should install cuda 9.0 first
             # solver.tf_log(epoch)
@@ -152,7 +156,7 @@ def main():
                 solver.results['training_loss'].append(float(solver.training_loss.data.cpu().numpy()))
                 solver.results['val_loss'].append(float(solver.val_loss.data.cpu().numpy()))
             else:
-                pass    # TODO
+                pass  # TODO
 
             is_best = False
             if solver.best_prec > solver.results['val_loss'][-1]:
@@ -160,7 +164,7 @@ def main():
                 is_best = True
                 best_epoch = epoch
 
-            print('The lowest validation error is in %d'%best_epoch)
+            print('The lowest validation error is in %d' % best_epoch)
             solver.save(epoch, is_best)
 
         # update lr
@@ -170,7 +174,7 @@ def main():
         data={'training_loss': solver.results['training_loss']
             , 'val_loss': solver.results['val_loss']
               },
-        index=range(1, NUM_EPOCH+1)
+        index=range(1, NUM_EPOCH + 1)
     )
     data_frame.to_csv(os.path.join(solver.results_dir, 'train_results.csv'),
                       index_label='Epoch')

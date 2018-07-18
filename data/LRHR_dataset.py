@@ -1,6 +1,9 @@
 import os.path
-import torch.utils.data as data
 from data import common
+import torch.utils.data as data
+import torch
+import numpy as np
+
 
 class LRHRDataset(data.Dataset):
     '''
@@ -17,14 +20,14 @@ class LRHRDataset(data.Dataset):
         self.opt = opt
         self.paths_LR = None
         self.paths_HR = None
-        self.LR_env = None # environment for lmdb
+        self.LR_env = None  # environment for lmdb
         self.HR_env = None
 
         # read image list from subset list txt
         if opt['subset_file'] is not None and opt['phase'] == 'train':
             with open(opt['subset_file']) as f:
                 self.paths_HR = sorted([os.path.join(opt['dataroot_HR'], line.rstrip('\n')) \
-                        for line in f])
+                                        for line in f])
             if opt['dataroot_LR'] is not None:
                 raise NotImplementedError('Now subset only supports generating LR on-the-fly.')
         # read image list from lmdb or image files
@@ -34,8 +37,8 @@ class LRHRDataset(data.Dataset):
         assert self.paths_HR, 'Error: HR paths are empty.'
         if self.paths_LR and self.paths_HR:
             assert len(self.paths_LR) == len(self.paths_HR), \
-                'HR and LR datasets have different number of images - {}, {}.'.format(\
-                len(self.paths_LR), len(self.paths_HR))
+                'HR and LR datasets have different number of images - {}, {}.'.format( \
+                    len(self.paths_LR), len(self.paths_HR))
 
         self.random_scale_list = None
 
@@ -79,6 +82,76 @@ class LRHRDataset(data.Dataset):
             hr = common.modcrop(hr, scale)
 
         return lr, hr
+
+    def __len__(self):
+        return len(self.paths_HR)
+
+
+class LRHRlmdbDataset(data.Dataset):
+    '''
+    Read LR and HR image pair.
+    If only HR image is provided, generate LR image on-the-fly.
+    The pair is ensured by 'sorted' function, so please check the name convention.
+    '''
+
+    def name(self):
+        return 'LRHRlmdbDataset'
+
+    def __init__(self, opt):
+        super(LRHRlmdbDataset, self).__init__()
+        self.opt = opt
+        self.paths_LR = None
+        self.paths_HR = None
+        self.LR_env = None  # environment for lmdb
+        self.HR_env = None
+
+        # read image list from subset list txt
+        if opt['subset_file'] is not None and opt['phase'] == 'train':
+            with open(opt['subset_file']) as f:
+                self.paths_HR = sorted([os.path.join(opt['dataroot_HR'], line.rstrip('\n')) \
+                                        for line in f])
+            if opt['dataroot_LR'] is not None:
+                raise NotImplementedError('Now subset only supports generating LR on-the-fly.')
+        # read image list from lmdb or image files
+        self.HR_env, self.paths_HR = common.get_image_paths(opt['data_type'], opt['dataroot_HR'])
+        self.LR_env, self.paths_LR = common.get_image_paths(opt['data_type'], opt['dataroot_LR'])
+
+        assert self.paths_HR, 'Error: HR paths are empty.'
+        if self.paths_LR and self.paths_HR:
+            assert len(self.paths_LR) == len(self.paths_HR), \
+                'HR and LR datasets have different number of images - {}, {}.'.format( \
+                    len(self.paths_LR), len(self.paths_HR))
+
+        self.random_scale_list = None
+
+    def __getitem__(self, index):
+        HR_path, LR_path = None, None
+        scale = self.opt['scale']
+        HR_size = self.opt['HR_size']
+
+        # get HR image
+        HR_path = self.paths_HR[index]
+        img_HR = common.read_img(self.HR_env, HR_path)
+
+        # get LR image
+        if self.paths_LR:
+            LR_path = self.paths_LR[index]
+            img_LR = common.read_img(self.LR_env, LR_path)
+        else:
+            raise NotImplementedError('Low resolution images do not exist')
+
+        # channel conversion
+        if self.opt['color']:
+            img_LR, img_HR = common.channel_convert(img_HR.shape[2], [img_LR, img_HR], self.opt['color'])
+
+        # HWC to CHW, BGR to RGB, numpy to tensor
+        tensor_LR = torch.from_numpy(np.ascontiguousarray(img_LR)).float()
+        tensor_HR = torch.from_numpy(np.ascontiguousarray(img_HR)).float()
+
+        if LR_path is None:
+            LR_path = HR_path
+
+        return {'LR': tensor_LR, 'HR': tensor_HR, 'LR_path': LR_path, 'HR_path': HR_path}
 
     def __len__(self):
         return len(self.paths_HR)

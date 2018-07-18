@@ -1,20 +1,20 @@
 {
-  "name":"VDSR_K"
+  "name":"VDSR"
   ,"exec_debug": false
   ,"net_debug": false
   ,"mode":"sr"
   ,"scale": 3
   ,"datasets": {
     "train": {
-      "name": "91Images"
-      ,"mode": "LRHR_H5_m"
-      ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
-      ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
-      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
-      ,"n_workers": 1
+      "name": "291Images"
+      ,"mode": "LRHR_LMDB"
+      ,"dataroot_HR": "/home/qilei/qilei/pytorch-vdsr-master/HR_291.lmdb"
+      ,"dataroot_LR": "/home/qilei/qilei/pytorch-vdsr-master/LR_291.lmdb"
+      ,"dataroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
+      ,"coeffroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
+      ,"n_workers": 4
       ,"batch_size": 128
-      ,"HR_size": 128
+      ,"HR_size": 41
       ,"use_flip": false
       ,"use_rot": false
       ,"noise": "."
@@ -25,8 +25,8 @@
       ,"batch_size": 64
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/test.h5"
-      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/testcof.h5"
+      ,"dataroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/test.h5"
+      ,"coeffroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/testcof.h5"
     }
   }
   ,"networks": {
