@@ -84,6 +84,15 @@ def read_img(env, path):
         img = np.expand_dims(img, axis=2)
     return img
 
+def read_coeff(env, path):
+    with env.begin(write=False) as txn:
+        buf = txn.get(path.encode('ascii'))
+        buf_meta = txn.get((path + '.meta').encode('ascii')).decode('ascii')
+    coeff_temp = np.frombuffer(buf, dtype=np.float32)
+    row, col = [int(s) for s in buf_meta.split(',')]
+    coeff = coeff_temp.reshape(row, col)
+    return coeff
+
 
 
 ####################

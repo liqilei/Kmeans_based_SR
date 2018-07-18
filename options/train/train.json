@@ -6,13 +6,14 @@
   ,"scale": 3
   ,"datasets": {
     "train": {
-      "name": "291Images"
+      "name": "set5"
       ,"mode": "LRHR_LMDB"
-      ,"dataroot_HR": "/home/qilei/qilei/pytorch-vdsr-master/HR_291.lmdb"
-      ,"dataroot_LR": "/home/qilei/qilei/pytorch-vdsr-master/LR_291.lmdb"
+      ,"dataroot_HR": "/home/qilei/data/lmdb/291withcoeff/HR_291.lmdb"
+      ,"dataroot_LR": "/home/qilei/data/lmdb/291withcoeff/LR_291.lmdb"
+      ,"coeffroot_LMDB": "/home/qilei/data/lmdb/291withcoeff/coeff_set5.lmdb"
       ,"dataroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
       ,"coeffroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
-      ,"n_workers": 4
+      ,"n_workers": 1
       ,"batch_size": 128
       ,"HR_size": 41
       ,"use_flip": false
