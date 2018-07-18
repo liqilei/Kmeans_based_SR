@@ -1,6 +1,6 @@
 clear;close all;
 
-folder = '/home/qilei/Documents/SRdata/Set5';
+folder = '/home/qilei/Documents/291';
 
 size_input = 41;
 size_label = 41;
@@ -37,6 +37,7 @@ filepaths = [filepaths; dir(fullfile(folder, '*.jpg'))];
 filepaths = [filepaths; dir(fullfile(folder, '*.bmp'))];
 
 for i = 1 : length(filepaths)
+    
     for flip = 1: 3
         for degree = 1 : 4
             for s = 1 : length(scale)
