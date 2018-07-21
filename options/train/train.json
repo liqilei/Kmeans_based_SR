@@ -6,10 +6,11 @@
   ,"scale": 3
   ,"datasets": {
     "train": {
-      "name": "291Images"
+      "name": "291"
       ,"mode": "LRHR_LMDB"
-      ,"dataroot_HR": "/home/server606/qilei/vdsr/pytorch-vdsr-qilei/HR_291.lmdb"
-      ,"dataroot_LR": "/home/server606/qilei/vdsr/pytorch-vdsr-qilei/LR_291.lmdb"
+      ,"dataroot_HR": "/home/qilei/data/lmdb/291withcoeff/HR_291.lmdb"
+      ,"dataroot_LR": "/home/qilei/data/lmdb/291withcoeff/LR_291.lmdb"
+      ,"coeffroot_LMDB": "/home/qilei/data/lmdb/291withcoeff/coeff_set5.lmdb"
       ,"dataroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
       ,"coeffroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
       ,"n_workers": 8

@@ -22,7 +22,7 @@ def create_dataset(dataset_opt):
     elif mode == 'LRHR':
         from data.LRHR_dataset import LRHRDataset as D
     elif mode == 'LRHR_LMDB':
-        from data.LRHR_dataset import LRHRlmdbDataset as D
+        from data.LRHR_dataset import LRHRlmdbDatasetwithcoeff as D
     elif mode == 'LRHRSEG':
         from data.LRHR_seg_dataset import LRHRSegDataset as D
     elif mode == 'LRHR_H5':
