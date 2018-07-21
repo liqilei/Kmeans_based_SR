@@ -8,11 +8,11 @@
     "train": {
       "name": "291Images"
       ,"mode": "LRHR_LMDB"
-      ,"dataroot_HR": "/home/qilei/qilei/pytorch-vdsr-master/HR_291.lmdb"
-      ,"dataroot_LR": "/home/qilei/qilei/pytorch-vdsr-master/LR_291.lmdb"
+      ,"dataroot_HR": "/home/server606/qilei/vdsr/pytorch-vdsr-qilei/HR_291.lmdb"
+      ,"dataroot_LR": "/home/server606/qilei/vdsr/pytorch-vdsr-qilei/LR_291.lmdb"
       ,"dataroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
       ,"coeffroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
-      ,"n_workers": 4
+      ,"n_workers": 8
       ,"batch_size": 128
       ,"HR_size": 41
       ,"use_flip": false
@@ -25,8 +25,8 @@
       ,"batch_size": 64
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/test.h5"
-      ,"coeffroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/testcof.h5"
+      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/test.h5"
+      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/testcof.h5"
     }
   }
   ,"networks": {
@@ -58,7 +58,7 @@
     ,"beta1_D": 0.9
     ,"clip_grad": 0.4
     ,"lr_scheme": "MultiStepLR"
-    ,"lr_steps": [9, 19, 29, 39]
+    ,"lr_steps": [19, 39, 59]
     ,"lr_gamma": 0.1
 
     ,"pixel_criterion": "l2"
@@ -73,10 +73,10 @@
     ,"gp_weigth": 10
 
     ,"manual_seed": 0
-    ,"num_epochs": 50
+    ,"num_epochs": 80
     ,"log_step": 1
     ,"val_step": 1
-    ,"resume": false
+    ,"resume": true
     ,"resume_path": "/home/server606/Ruby/Kmeans_based_SR/experiments/VDSR_in1f64b4_x3"
   }
 }

@@ -50,14 +50,7 @@ class SRModel(BaseSolver):
             self.criterion_pix_weight = self.train_opt['pixel_weight']
 
             weight_decay = self.train_opt['weight_decay_G'] if self.train_opt['weight_decay_G'] else 0
-            # optim_params = []
-            # for k, v in self.model.named_parameters():
-            #     if v.requires_grad:
-            #         optim_params.append(v)
-            #     else:
-            #         print('[WARNING] Parameters [%s] will not be optimized!'%k)
 
-            # self.optimizer = optim.Adam(optim_params, lr=self.train_opt['lr_G'], weight_decay=weight_decay)
             # self.optimizer = optim.Adam(self.model.parameters(), lr=self.train_opt['lr_G'], weight_decay=weight_decay)
             self.optimizer = optim.SGD(self.model.parameters(), lr=self.train_opt['lr_G'], momentum=self.train_opt['beta1_G'], weight_decay=weight_decay)
 
