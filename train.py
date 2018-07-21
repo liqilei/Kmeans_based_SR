@@ -84,12 +84,14 @@ def main():
         start_epoch = checkpoint['epoch'] + 1  # Because the last state had been saved
         solver.optimizer.load_state_dict(checkpoint['optimizer'])
         solver.best_prec = checkpoint['best_prec']
+        solver.best_epoch = checkpoint['best_epoch']
         solver.results = checkpoint['results']
         print('=> Done.')
     else:
         solver.net_init()
 
-    best_epoch = 0
+
+    # best_epoch = 0
     # start train
     for epoch in range(start_epoch, NUM_EPOCH + 1):
         # Initialization
@@ -162,9 +164,9 @@ def main():
             if solver.best_prec > solver.results['val_loss'][-1]:
                 solver.best_prec = solver.results['val_loss'][-1]
                 is_best = True
-                best_epoch = epoch
+                solver.best_epoch = epoch
 
-            print('The lowest validation error is in %d' % best_epoch)
+            print('The lowest validation error is in %d' % solver.best_epoch)
             solver.save(epoch, is_best)
 
         # update lr
