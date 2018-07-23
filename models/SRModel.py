@@ -20,7 +20,8 @@ class SRModel(BaseSolver):
         self.HR = self.Tensor()
         self.var_LR = None
         self.var_HR = None
-	
+
+        self.best_epoch = 0
         self.best_prec = float("inf")
         self.results = {'training_loss': [],
                         'val_loss': [],
@@ -50,14 +51,7 @@ class SRModel(BaseSolver):
             self.criterion_pix_weight = self.train_opt['pixel_weight']
 
             weight_decay = self.train_opt['weight_decay_G'] if self.train_opt['weight_decay_G'] else 0
-            # optim_params = []
-            # for k, v in self.model.named_parameters():
-            #     if v.requires_grad:
-            #         optim_params.append(v)
-            #     else:
-            #         print('[WARNING] Parameters [%s] will not be optimized!'%k)
 
-            # self.optimizer = optim.Adam(optim_params, lr=self.train_opt['lr_G'], weight_decay=weight_decay)
             # self.optimizer = optim.Adam(self.model.parameters(), lr=self.train_opt['lr_G'], weight_decay=weight_decay)
             self.optimizer = optim.SGD(self.model.parameters(), lr=self.train_opt['lr_G'], momentum=self.train_opt['beta1_G'], weight_decay=weight_decay)
 
@@ -127,11 +121,13 @@ class SRModel(BaseSolver):
             'state_dict': self.model,
             'optimizer': self.optimizer.state_dict(),
             'best_prec': self.best_prec,
+            'best_epoch': self.best_epoch,
             'results': self.results
         }
         torch.save(state, filename)
         if is_best:
             torch.save(state, os.path.join(self.checkpoint_dir, 'best_checkpoint.pth'))
+            print('[Saving best checkpoint to %s ...]' % os.path.join(self.checkpoint_dir, 'best_checkpoint.pth'))
         print(['=> Done.'])
 
     def load(self):
