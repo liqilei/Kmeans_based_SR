@@ -26,28 +26,36 @@ class vdsr(nn.Module):
 
         return output
 
-# TODO: vdsr_k 
-"""
+# TODO: vdsr_k
+
 class vdsr_k(nn.Module):
     def __init__(self, in_channels, out_channels, num_branch):
         super(vdsr_k, self).__init__()
+        split_layer = 4
         self.num_branch = num_branch
 
-        self.patch_extraction = B.ConvBlock(in_channels, 64, kernel_size=9, norm_type=None, act_type='relu',valid_padding=False, padding=0)
-        self.mapping = B.ConvBlock(64, 32, kernel_size=1, norm_type=None, act_type='relu',valid_padding=False, padding=0)
+        self.conv = nn.Sequential()
+        self.conv.add_module(B.ConvBlock(in_channels, 64, kernel_size=3, norm_type=None, act_type='relu',valid_padding=True, bias=False))
 
-        self.reconstruct = nn.ModuleList()
+        for i in range(18-split_layer):
+            self.conv.add_module(B.ConvBlock(64, 64, kernel_size=3, norm_type=None, act_type='relu',valid_padding=True, bias=False))
 
-        for _ in range(num_branch):
-            self.reconstruct.append(B.ConvBlock(32, out_channels, kernel_size=5, norm_type=None, act_type=None,valid_padding=False, padding=0))
+        self.conv_branch = nn.ModuleList()
+
+        for _ in range(self.num_branch):
+            sub_branch = nn.Sequential()
+            for _i in range(split_layer):
+                sub_branch.add_module(B.ConvBlock(64, 64, kernel_size=3, norm_type=None, act_type='relu',valid_padding=True, bias=False))
+
+            sub_branch.add_module(B.ConvBlock(64, out_channels, kernel_size=3, norm_type=None, act_type=None, valid_padding=True, bias=False))
+            self.conv_branch.append(sub_branch)
 
     def forward(self, x, coeff):
-        x = self.patch_extraction(x)
-        x = self.mapping(x)
+        x = self.conv(x)
 
         hr_list = []
         for idx in range(self.num_branch):
-            hr_list.append(self.reconstruct[idx](x).mul(torch.reshape(coeff[idx], (-1, 1, 1, 1))))
+            hr_list.append(self.conv_branch[idx](x).mul(torch.reshape(coeff[idx], (-1, 1, 1, 1))))
 
         hr = hr_list[0]
 
@@ -55,5 +63,4 @@ class vdsr_k(nn.Module):
             hr = torch.add(hr, hr_list[idx+1])
 
         return hr
-"""
 
