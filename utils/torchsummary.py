@@ -62,7 +62,7 @@ def summary(model, input_size):
     model.apply(register_hook)
     # make a forward pass
     # print(x.shape)
-    if type(model.module).__name__ == 'srcnn_k':
+    if '_k' in type(model.module).__name__ :
         a = 1/float(model.module.num_branch)
         coeff = [torch.unsqueeze(torch.tensor(a), 0) for i in range(model.module.num_branch)]
         model(x, coeff)
