@@ -16,18 +16,18 @@ dbstop if error
 run matconvnet-1.0-beta25/matlab/vl_setupnn;
 
 %% read ground truth image
-im_path = '/media/qilei/李启磊18678106384/model/Set5_bmp';
+im_path = '/home/qilei/Documents/SRdata/Set5';
 im_dir = dir(fullfile(im_path, '*bmp'));
 im_num = length(im_dir);
 %% initialization
-use_model = 0;
-model = '/media/qilei/李启磊18678106384/model/VDSRtotestmatconv/experiments/VDSR_original/epoch/best_epoch.mat';
+% use_model = 0;
+% model = '/media/qilei/李启磊18678106384/model/VDSRtotestmatconv/experiments/VDSR_original/epoch/best_epoch.mat';
 % use_model = 1;
 % model = '/media/qilei/李启磊18678106384/model/VDSRtotestmatconv/experiments/VDSR_original/epoch/VDSR_Official.mat';
 % use_model = 2;
 % model = '/home/qilei/qilei/VDSRtotestmatconv/experiments/VDSR_original/epoch/best_epoch_50_14.mat';
-% use_model = 3;
-% model = '/media/qilei/李启磊18678106384/model/07.16/best_epoch.mat';
+use_model = 3;
+model = '/media/qilei/18678106384/experiments/Kmeans/checkpoint.mat';
 
 stride = 1; % same as the convolution stride
 size_input = 41;

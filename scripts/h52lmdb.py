@@ -5,7 +5,7 @@ import numpy as np
 import pickle
 
 # read h5 file
-file_path = '/home/qilei/data/H5Data/h5withcoeff/291/train.h5'
+file_path = '/home/qilei/data/H5Data/h5withcoeff/291/test.h5'
 hf = h5py.File(file_path)
 print('keys in hf are:', )
 hf.visit(print)
@@ -19,7 +19,7 @@ print('Finish reading image data from h5 file\n')
 
 # create lr lmdb file
 
-lmdb_save_path = '/home/qilei/data/lmdb/291withcoeff/LR_291.lmdb'  # must end with .lmdb
+lmdb_save_path = '/home/qilei/data/lmdb/291withcoeff/LR_set14.lmdb'  # must end with .lmdb
 map_size = data.nbytes * 10
 env = lmdb.open(lmdb_save_path, map_size=map_size)
 print('Write image data to LR_lmdb file')
@@ -46,7 +46,7 @@ print('Finish creating LR_lmdb keys.')
 
 # create HR lmdb file
 
-lmdb_save_path = '/home/qilei/data/lmdb/291withcoeff/HR_291.lmdb'  # must end with .lmdb
+lmdb_save_path = '/home/qilei/data/lmdb/291withcoeff/HR_set14.lmdb'  # must end with .lmdb
 map_size = data.nbytes * 10
 env = lmdb.open(lmdb_save_path, map_size=map_size)
 print('Write image data to HR_lmdb file')
@@ -72,7 +72,7 @@ with env.begin(write=False) as txn:
 print('Finish creating HR_lmdb keys.')
 
 # create coeff lmdb file
-coeff_path = '/home/qilei/data/H5Data/h5withcoeff/291/train_coeff.h5'
+coeff_path = '/home/qilei/data/H5Data/h5withcoeff/291/test_coeff.h5'
 hf_coeff = h5py.File(coeff_path)
 print('keys in hf are:', )
 hf_coeff.visit(print)

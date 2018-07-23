@@ -13,7 +13,7 @@
       ,"coeffroot_LMDB": "/home/qilei/data/lmdb/291withcoeff/coeff_set5.lmdb"
       ,"dataroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
       ,"coeffroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
-      ,"n_workers": 8
+      ,"n_workers": 4
       ,"batch_size": 128
       ,"HR_size": 41
       ,"use_flip": false
@@ -74,10 +74,10 @@
     ,"gp_weigth": 10
 
     ,"manual_seed": 0
-    ,"num_epochs": 50
+    ,"num_epochs": 20
     ,"log_step": 1
     ,"val_step": 1
     ,"resume": false
-    ,"resume_path": "/home/server606/Ruby/Kmeans_based_SR/experiments/VDSR_in1f64b4_x3"
+    ,"resume_path": "/home/qilei/Kmeans_based_SR/experiments"
   }
 }
