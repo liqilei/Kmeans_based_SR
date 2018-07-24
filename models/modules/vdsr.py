@@ -44,17 +44,18 @@ class vdsr_k(nn.Module):
             conv_out = B.ConvBlock(64, out_channels, kernel_size=3, norm_type=None, act_type=None, valid_padding=True, bias=False)
             self.conv_branch.append(B.sequential(*sub_branch, conv_out))
 
-    def forward(self, x, coeff):
-        x = self.conv(x)
+    def forward(self, input, coeff):
+        x = self.conv(input)
 
-        hr_list = []
+        res_list = []
         for idx in range(self.num_branch):
-            hr_list.append(self.conv_branch[idx](x).mul(torch.reshape(coeff[idx], (-1, 1, 1, 1))))
+            res_list.append(self.conv_branch[idx](x).mul(torch.reshape(coeff[idx], (-1, 1, 1, 1))))
 
-        hr = hr_list[0]
+        res = res_list[0]
 
         for idx in range(self.num_branch - 1):
-            hr = torch.add(hr, hr_list[idx+1])
+            res = torch.add(res, res_list[idx+1])
 
+        hr = torch.add(res, input)
         return hr
 
