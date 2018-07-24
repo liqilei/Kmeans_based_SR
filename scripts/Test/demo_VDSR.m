@@ -16,7 +16,7 @@ dbstop if error
 run matconvnet-1.0-beta25/matlab/vl_setupnn;
 
 %% read ground truth image
-im_path = '/home/qilei/Documents/SRdata/Set5';
+im_path = '/home/qilei/Documents/SRdata/Set14';
 im_dir = dir(fullfile(im_path, '*bmp'));
 im_num = length(im_dir);
 %% initialization
@@ -27,7 +27,7 @@ im_num = length(im_dir);
 % use_model = 2;
 % model = '/home/qilei/qilei/VDSRtotestmatconv/experiments/VDSR_original/epoch/best_epoch_50_14.mat';
 use_model = 3;
-model = '/media/qilei/18678106384/experiments/Kmeans/checkpoint.mat';
+model = '/home/qilei/epoch80/best_checkpoint.mat';
 
 stride = 1; % same as the convolution stride
 size_input = 41;

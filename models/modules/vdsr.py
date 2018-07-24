@@ -26,7 +26,6 @@ class vdsr(nn.Module):
 
         return output
 
-# TODO: vdsr_k
 
 class vdsr_k(nn.Module):
     def __init__(self, in_channels, out_channels, num_branch):

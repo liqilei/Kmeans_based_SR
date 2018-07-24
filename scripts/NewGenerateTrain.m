@@ -1,13 +1,15 @@
 clear;close all;
 
-folder = '/home/qilei/Documents/291';
+% folder = '/home/qilei/Documents/291';
+folder = '/home/qilei/Documents/Test_Image/Set14';
+
 
 size_input = 41;
 size_label = 41;
 stride = 41;
-num_cluster = 2;
+num_cluster = 3;
 
-savefolder = '/home/qilei/data/H5Data/h5withcoeff/291';
+savefolder = '/home/qilei/data/H5Data/h5withcoeff/291/C3';
 
 if exist(savefolder, 'dir')
    fprintf('Warning: replacing existing dir %s \n', savefolder);
@@ -35,6 +37,7 @@ margain = 0;
 filepaths = [];
 filepaths = [filepaths; dir(fullfile(folder, '*.jpg'))];
 filepaths = [filepaths; dir(fullfile(folder, '*.bmp'))];
+filepaths = [filepaths; dir(fullfile(folder, '*.png'))];
 
 for i = 1 : length(filepaths)
     

@@ -8,12 +8,12 @@
     "train": {
       "name": "291"
       ,"mode": "LRHR_LMDB"
-      ,"dataroot_HR": "/home/qilei/data/lmdb/291withcoeff/HR_291.lmdb"
-      ,"dataroot_LR": "/home/qilei/data/lmdb/291withcoeff/LR_291.lmdb"
-      ,"coeffroot_LMDB": "/home/qilei/data/lmdb/291withcoeff/coeff_set5.lmdb"
+      ,"dataroot_HR": "/home/qilei/data/lmdb/291withcoeff/C3/HR_291.lmdb"
+      ,"dataroot_LR": "/home/qilei/data/lmdb/291withcoeff/C3/LR_291.lmdb"
+      ,"coeffroot_LMDB": "/home/qilei/data/lmdb/291withcoeff/C3/coeff_291.lmdb"
       ,"dataroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
       ,"coeffroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
-      ,"n_workers": 4
+      ,"n_workers": 1
       ,"batch_size": 128
       ,"HR_size": 41
       ,"use_flip": false
@@ -26,8 +26,8 @@
       ,"batch_size": 64
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
-      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/test.h5"
-      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/testcof.h5"
+      ,"dataroot_H5": "/home/qilei/data/H5Data/h5withcoeff/291/C2/test.h5"
+      ,"coeffroot_H5": "/home/qilei/data/H5Data/h5withcoeff/291/C2/test_coeff.h5"
     }
   }
   ,"networks": {
