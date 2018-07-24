@@ -37,10 +37,11 @@ def params_to_dict(params, dict, key, layer_name):
     return dict
 
 def main():
-    checkpoint = torch.load(args_.pytorch_model)
+    pth_path = args_.pytorch_model
+    checkpoint = torch.load(pth_path)
     params = checkpoint['state_dict'].state_dict()
 
-    mat_savepath = os.path.join(os.path.dirname(args_.pytorch_model), 'best_epoch.mat')
+    mat_path = os.path.join(os.path.dirname(pth_path), os.path.basename(pth_path).split('.')[0] + '.mat')
 
     tmp = OrderedDict()
     for key in params:
@@ -50,9 +51,9 @@ def main():
 
     params = tmp
 
-    print('Saving network to {}'.format(mat_savepath))
+    print('Saving network to {}'.format(mat_path))
 
-    scipy.io.savemat(mat_savepath, params, oned_as='column')
+    scipy.io.savemat(mat_path, params, oned_as='column')
 
 if __name__ == '__main__':
     main()

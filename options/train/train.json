@@ -8,9 +8,15 @@
     "train": {
       "name": "291"
       ,"mode": "LRHR_LMDB"
+<<<<<<< HEAD
       ,"dataroot_HR": "/home/qilei/data/lmdb/291withcoeff/C3/HR_291.lmdb"
       ,"dataroot_LR": "/home/qilei/data/lmdb/291withcoeff/C3/LR_291.lmdb"
       ,"coeffroot_LMDB": "/home/qilei/data/lmdb/291withcoeff/C3/coeff_291.lmdb"
+=======
+      ,"dataroot_HR": "/home/server606/data_for_K/HR_291.lmdb"
+      ,"dataroot_LR": "/home/server606/data_for_K/LR_291.lmdb"
+      ,"coeffroot_LMDB": "/home/server606/data_for_K/coeff_291.lmdb"
+>>>>>>> bd8274453e5312e6ff6c930986ffbe6312bccd75
       ,"dataroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/train.h5"
       ,"coeffroot_H5": "/home/qilei/qilei/Kmeans_based_SR/datasets/H5Data/c2/traincof.h5"
       ,"n_workers": 1
@@ -22,17 +28,25 @@
     }
     ,"val": {
       "name": "val_set5"
-      ,"mode": "LRHR_H5"
+      ,"mode": "LRHR_LMDB"
       ,"batch_size": 64
+<<<<<<< HEAD
       ,"dataroot_HR": "pathto/data/DIV2K/DIV2K_train_HR_sub"
       ,"dataroot_LR": "pathto/data/DIV2K/DIV2K_train_HR_sub_bicLRx4"
       ,"dataroot_H5": "/home/qilei/data/H5Data/h5withcoeff/291/C2/test.h5"
       ,"coeffroot_H5": "/home/qilei/data/H5Data/h5withcoeff/291/C2/test_coeff.h5"
+=======
+      ,"dataroot_HR": "/home/server606/data_for_K/HR_set14.lmdb"
+      ,"dataroot_LR": "/home/server606/data_for_K/LR_set14.lmdb"
+      ,"coeffroot_LMDB": "/home/server606/data_for_K/coeff_set14.lmdb"
+      ,"dataroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/test.h5"
+      ,"coeffroot_H5": "/home/server606/Ruby/Kmeans_based_SR/datasets/H5Data/c2/testcof.h5"
+>>>>>>> bd8274453e5312e6ff6c930986ffbe6312bccd75
     }
   }
   ,"networks": {
     "G": {
-    "which_model": "vdsr"
+    "which_model": "vdsr_k"
     ,"norm_type": "None"
     ,"mode": "NAC"
     ,"num_features": 64
@@ -78,6 +92,6 @@
     ,"log_step": 1
     ,"val_step": 1
     ,"resume": true
-    ,"resume_path": "/home/server606/Ruby/Kmeans_based_SR/experiments/VDSR_in1f64b4_x3"
+    ,"resume_path": "/home/server606/Ruby/Kmeans_based_SR/experiments/VDSR_K_in1f64b4_x3"
   }
 }

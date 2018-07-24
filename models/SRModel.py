@@ -75,7 +75,7 @@ class SRModel(BaseSolver):
         self.var_LR = Variable(self.LR)
         self.HR.resize_(target.size()).copy_(target)
         self.var_HR = Variable(self.HR)
-        if type(self.model.module).__name__ == 'srcnn_k':
+        if '_k' in type(self.model.module).__name__:
             self.coeff = batch['coeff']
 
     def summary(self, input_size):
@@ -88,7 +88,7 @@ class SRModel(BaseSolver):
 
     def train_step(self):
         self.optimizer.zero_grad()
-        if type(self.model.module).__name__ == 'srcnn_k':
+        if '_k' in type(self.model.module).__name__:
             self.SR = self.model(self.var_LR, self.coeff)
         else:
             self.SR = self.model(self.var_LR)
@@ -105,7 +105,7 @@ class SRModel(BaseSolver):
     def test(self):
         self.model.eval()
         with torch.no_grad():
-            if type(self.model.module).__name__ == 'srcnn_k':
+            if '_k' in type(self.model.module).__name__:
                 self.SR = self.model(self.var_LR, self.coeff)
             else:
                 self.SR = self.model(self.var_LR)  # TODO : analysis why it can occupy most graphic memory

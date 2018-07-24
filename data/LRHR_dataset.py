@@ -215,6 +215,7 @@ class LRHRlmdbDatasetwithcoeff(data.Dataset):
         # get coeff
         coeff_path = self.path_coeff[index]
         coeff = common.read_coeff(self.coeff_env, coeff_path)
+        coeff = [coeff[0][i] for i in range(coeff.size)]
 
         # channel conversion
         if self.opt['color']:
