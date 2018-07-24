@@ -1,6 +1,7 @@
 .vs/
 .idea/
 experiments/
+options/train/train.json
 
 *.pyc
 *.jpg
@@ -8,4 +9,3 @@ experiments/
 *.bmp
 *.h5
 *.mat
-*.json
