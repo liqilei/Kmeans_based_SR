@@ -8,7 +8,7 @@ stride = 21 ;
 num_cluster = 2;
 
 % savefolder = ['../datasets/H5Data/c' num2str(num_cluster)];
-savefolder = '/home/qilei/data/H5Data/h5withcoeff/291';
+savefolder = '/home/qilei/data/H5Data/h5withcoeff/C2/';
 
 savetestpath = [savefolder '/test.h5'];
 savecoeffpath = [savefolder '/test_coeff.h5'];

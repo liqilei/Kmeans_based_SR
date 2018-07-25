@@ -1,15 +1,15 @@
 clear;close all;
 
 % folder = '/home/qilei/Documents/291';
-folder = '/home/qilei/Documents/Test_Image/Set14';
+folder = '/home/qilei/Documents/SRdata/291';
 
 
 size_input = 41;
 size_label = 41;
 stride = 41;
-num_cluster = 3;
+num_cluster = 4;
 
-savefolder = '/home/qilei/data/H5Data/h5withcoeff/291/C3';
+savefolder = '/home/qilei/data/H5Data/h5withcoeff/C4/291';
 
 if exist(savefolder, 'dir')
    fprintf('Warning: replacing existing dir %s \n', savefolder);
@@ -65,7 +65,7 @@ for i = 1 : length(filepaths)
                         im_label = modcrop(image, scale(s));
                         [hei,wid] = size(im_label);
                         im_input = imresize(imresize(im_label,1/scale(s),'bicubic'),[hei,wid],'bicubic');
-                        filepaths(i).name
+                        i
                         for x = 1 : stride : hei-size_input+1
                             for y = 1 :stride : wid-size_input+1
 
